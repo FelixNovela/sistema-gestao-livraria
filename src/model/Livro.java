@@ -3,7 +3,8 @@ package model;
 import java.io.Serializable;
 
 public class Livro implements Serializable {
-    private String isbn;
+	private static final long serialVersionUID = 1L;
+	private String isbn;
     private String titulo;
     private String autor;
     private String editora;
@@ -65,6 +66,12 @@ public class Livro implements Serializable {
 
 	public void setQuantidadeEmEstoque(int quantidadeEmEstoque) {
 		this.quantidadeEmEstoque = quantidadeEmEstoque;
+	}
+
+	@Override
+	public String toString() {
+		return "Livro [isbn=" + isbn + ", titulo=" + titulo + ", autor=" + autor + ", editora=" + editora + ", preco="
+				+ preco + ", quantidadeEmEstoque=" + quantidadeEmEstoque + "]";
 	}
 
     

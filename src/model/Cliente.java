@@ -4,7 +4,8 @@ import java.io.Serializable;
 import model.enums.TipoDocumento;
 
 public class Cliente implements Serializable {
-    private int id;
+	private static final long serialVersionUID = 1L;
+	private int id;
     private String nome;
     private String email;
     private TipoDocumento tipoDocumento;
@@ -58,6 +59,12 @@ public class Cliente implements Serializable {
 		this.numeroDocumento = numeroDocumento;
 	}
 
+	@Override
+	public String toString() {
+		return "Cliente [id=" + id + ", nome=" + nome + ", email=" + email + ", tipoDocumento=" + tipoDocumento
+				+ ", numeroDocumento=" + numeroDocumento + "]";
+	}
+	
     
 }
 

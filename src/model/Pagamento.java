@@ -26,4 +26,10 @@ public class Pagamento implements Serializable {
 	public double getTroco() {
 		return troco;
 	}
+
+	@Override
+	public String toString() {
+		return "Pagamento [tipoPagamento=" + tipoPagamento + ", valorPago=" + valorPago + ", troco=" + troco + "]";
+	}
+	
 }

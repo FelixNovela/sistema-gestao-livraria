@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class Venda implements Serializable {
+	private static final long serialVersionUID = 1L;
 	private int id;
 	private Cliente cliente;
 	private List<ItemVenda> itens;
@@ -45,4 +46,12 @@ public class Venda implements Serializable {
 	public double getValorTotal() {
 		return valorTotal;
 	}
+
+	@Override
+	public String toString() {
+		return "Venda [id=" + id + ", cliente=" + cliente + ", itens=" + itens + ", pagamento=" + pagamento + ", data="
+				+ data + ", valorTotal=" + valorTotal + "]";
+	}
+	
+	
 }

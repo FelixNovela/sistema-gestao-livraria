@@ -9,7 +9,7 @@ public class ItemVenda implements Serializable {
 
 	public ItemVenda(Livro livro, int quantidade, double precoUnitario) {
 		this.livro = livro;
-		this.quantidade = quantidade;
+		this.quantidade = quantidade; 
 		this.precoUnitario = precoUnitario;
 	}
 
