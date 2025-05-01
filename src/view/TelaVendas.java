@@ -13,31 +13,17 @@ import javax.swing.table.DefaultTableModel;
 
 import model.Livro;
 import service.LivroService;
+import view.cores.Cores;
 
 public class TelaVendas extends JPanel {
 
     
     
-    private static final Color COR_PRIMARIA = new Color(0x5D4037);
-    private static final Color COR_SECUNDARIA = new Color(0x8D6E63);
-    private static final Color COR_FUNDO = new Color(0xEFEBE9);
-    private static final Color COR_PAINEL = new Color(0xD7CCC8);
-    private static final Color COR_DESTAQUE = new Color(0xBCAAA4);
-    private static final Color COR_TEXTO = new Color(0x3E2723);
-    private static final Color COR_TEXTO_CLARO = new Color(0xFAFAFA);
-    private static final Color COR_BORDA = new Color(0xBCAAA4);
-    private static final Color COR_BOTAO = new Color(0x8D6E63);
-    private static final Color COR_BOTAO_HOVER = new Color(0x6D4C41);
-    private static final Color COR_ALERTA = new Color(0xEF5350); 
-    private static final Color COR_SUCESSO = new Color(0x66BB6A);
-
-    private final Font FONTE_PADRAO = new Font("Segoe UI", Font.PLAIN, 14);
-    private final Font FONTE_TITULO = new Font("Segoe UI", Font.BOLD, 26);
-    private final Font FONTE_BOTAO = new Font("Segoe UI", Font.BOLD, 13);
+    
 
     
     private JTextField campoPesquisa;
-   
+    private Cores cores;
     private JTable tabelaLivros;
     private DefaultTableModel modeloTabelaLivros;
     private JTable tabelaCarrinho;
@@ -52,7 +38,7 @@ public class TelaVendas extends JPanel {
     public TelaVendas() {
         setLayout(new BorderLayout(20, 20));
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        setBackground(COR_FUNDO);
+        setBackground(cores.COR_FUNDO);
 
         
         add(criarPainelSuperior(), BorderLayout.NORTH);
@@ -66,17 +52,17 @@ public class TelaVendas extends JPanel {
 
     private JPanel criarPainelSuperior() {
         JPanel painel = new JPanel(new BorderLayout(10, 0));
-        painel.setBackground(COR_FUNDO);
+        painel.setBackground(cores.COR_FUNDO);
         painel.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 
         JLabel titulo = new JLabel("Realizar Venda");
         titulo.setFont(new Font("Segoe UI", Font.BOLD, 24));
-        titulo.setForeground(COR_PRIMARIA);
+        titulo.setForeground(cores.COR_PRIMARIA);
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         JLabel data = new JLabel("Data: " + sdf.format(new Date()));
         data.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        data.setForeground(COR_TEXTO);
+        data.setForeground(cores.COR_TEXTO);
 
         painel.add(titulo, BorderLayout.WEST);
         painel.add(data, BorderLayout.EAST);
@@ -86,23 +72,23 @@ public class TelaVendas extends JPanel {
 
     private JPanel criarPainelLivros() {
         JPanel painel = new JPanel(new BorderLayout(0, 10));
-        painel.setBackground(COR_FUNDO);
+        painel.setBackground(cores.COR_FUNDO);
         
      
         
         
         JPanel painelPesquisa = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        painelPesquisa.setBackground(COR_FUNDO);
+        painelPesquisa.setBackground(cores.COR_FUNDO);
         
         campoPesquisa = new JTextField("Pesquisar...");
         campoPesquisa.setPreferredSize(new Dimension(530, 30));
         campoPesquisa.setMaximumSize(new Dimension(180, 30));
-        campoPesquisa.setFont(FONTE_PADRAO);
-        campoPesquisa.setBackground(COR_PAINEL);
+        campoPesquisa.setFont(cores.FONTE_PADRAO);
+        campoPesquisa.setBackground(cores.COR_PAINEL);
         campoPesquisa.setForeground(Color.GRAY);
-        campoPesquisa.setCaretColor(COR_TEXTO);
+        campoPesquisa.setCaretColor(cores.COR_TEXTO);
         campoPesquisa.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(COR_BORDA, 1),
+            BorderFactory.createLineBorder(cores.COR_BORDA, 1),
             BorderFactory.createEmptyBorder(5, 15, 5, 15)
         ));
 
@@ -110,7 +96,7 @@ public class TelaVendas extends JPanel {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 if (campoPesquisa.getText().equals("Pesquisar...")) {
                     campoPesquisa.setText("");
-                    campoPesquisa.setForeground(COR_TEXTO);
+                    campoPesquisa.setForeground(cores.COR_TEXTO);
                 }
             }
             public void focusLost(java.awt.event.FocusEvent evt) {
@@ -139,25 +125,25 @@ public class TelaVendas extends JPanel {
             public Component prepareRenderer(javax.swing.table.TableCellRenderer renderer, int row, int col) {
                 Component c = super.prepareRenderer(renderer, row, col);
                 if (!isRowSelected(row)) {
-                    c.setBackground((row % 2 == 0) ? COR_FUNDO : COR_DESTAQUE);
+                    c.setBackground((row % 2 == 0) ? cores.COR_FUNDO : cores.COR_DESTAQUE);
                     
                     if (col == 4) {
                         try {
                             int estoque = Integer.parseInt(getValueAt(row, col).toString());
-                            if (estoque <= 3) c.setBackground(COR_ALERTA);
+                            if (estoque <= 3) c.setBackground(cores.COR_ALERTA);
                         } catch (NumberFormatException ignored) {}
                     }
                 } else {
-                    c.setBackground(COR_DESTAQUE);
+                    c.setBackground(cores.COR_DESTAQUE);
                 }
-                c.setForeground(COR_TEXTO);
+                c.setForeground(cores.COR_TEXTO);
                 return c;
             }
         };
         
         tabelaLivros.setRowHeight(30);
         tabelaLivros.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        tabelaLivros.setGridColor(COR_DESTAQUE);
+        tabelaLivros.setGridColor(cores.COR_DESTAQUE);
         tabelaLivros.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
        
@@ -169,14 +155,14 @@ public class TelaVendas extends JPanel {
         tabelaLivros.getColumnModel().getColumn(5).setPreferredWidth(80);
         
         JScrollPane scrollLivros = new JScrollPane(tabelaLivros);
-        scrollLivros.getViewport().setBackground(COR_PAINEL);
+        scrollLivros.getViewport().setBackground(cores.COR_PAINEL);
         scrollLivros.setBorder(BorderFactory.createEmptyBorder());
         
         
         JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        painelBotoes.setBackground(COR_FUNDO);
+        painelBotoes.setBackground(cores.COR_FUNDO);
         
-        JButton btnAdicionar = criarBotao("Adicionar ao Carrinho", COR_SUCESSO);
+        JButton btnAdicionar = criarBotao("Adicionar ao Carrinho", cores.COR_SUCESSO);
         btnAdicionar.addActionListener(e -> adicionarAoCarrinho());
         
         painelBotoes.add(btnAdicionar);
@@ -185,11 +171,11 @@ public class TelaVendas extends JPanel {
         painel.add(painelPesquisa, BorderLayout.NORTH);
         
         JPanel painelCentral = new JPanel(new BorderLayout());
-        painelCentral.setBackground(COR_FUNDO);
+        painelCentral.setBackground(cores.COR_FUNDO);
         painelCentral.setBorder(BorderFactory.createTitledBorder(
-            BorderFactory.createLineBorder(COR_DESTAQUE),
+            BorderFactory.createLineBorder(cores.COR_DESTAQUE),
             "Livros Disponíveis", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.TOP,
-            new Font("Segoe UI", Font.BOLD, 16), COR_PRIMARIA
+            new Font("Segoe UI", Font.BOLD, 16), cores.COR_PRIMARIA
         ));
         painelCentral.add(scrollLivros, BorderLayout.CENTER);
         
@@ -201,7 +187,7 @@ public class TelaVendas extends JPanel {
 
     private JPanel criarPainelCarrinho() {
         JPanel painel = new JPanel(new BorderLayout(0, 10));
-        painel.setBackground(COR_FUNDO);
+        painel.setBackground(cores.COR_FUNDO);
         painel.setPreferredSize(new Dimension(400, 0));
         
       
@@ -216,7 +202,7 @@ public class TelaVendas extends JPanel {
         tabelaCarrinho = new JTable(modeloTabelaCarrinho);
         tabelaCarrinho.setRowHeight(30);
         tabelaCarrinho.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        tabelaCarrinho.setGridColor(COR_DESTAQUE);
+        tabelaCarrinho.setGridColor(cores.COR_DESTAQUE);
         
         
         JTextField editorQtd = new JTextField();
@@ -242,17 +228,17 @@ public class TelaVendas extends JPanel {
         });
         
         JScrollPane scrollCarrinho = new JScrollPane(tabelaCarrinho);
-        scrollCarrinho.getViewport().setBackground(COR_PAINEL);
+        scrollCarrinho.getViewport().setBackground(cores.COR_PAINEL);
         scrollCarrinho.setBorder(BorderFactory.createEmptyBorder());
         
       
         JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        painelBotoes.setBackground(COR_FUNDO);
+        painelBotoes.setBackground(cores.COR_FUNDO);
         
-        JButton btnRemover = criarBotao("❌ Remover Item", COR_ALERTA);
+        JButton btnRemover = criarBotao("Remover Item", cores.COR_ALERTA);
         btnRemover.addActionListener(e -> removerDoCarrinho());
         
-        JButton btnLimpar = criarBotao("🗑️ Limpar Carrinho", COR_SECUNDARIA);
+        JButton btnLimpar = criarBotao("Limpar Carrinho", cores.COR_SECUNDARIA);
         btnLimpar.addActionListener(e -> limparCarrinho());
         
         painelBotoes.add(btnRemover);
@@ -260,26 +246,26 @@ public class TelaVendas extends JPanel {
         
        
         JPanel painelTotal = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        painelTotal.setBackground(COR_FUNDO);
+        painelTotal.setBackground(cores.COR_FUNDO);
         
         JLabel lblTotal = new JLabel("Total:");
         lblTotal.setFont(new Font("Segoe UI", Font.BOLD, 18));
-        lblTotal.setForeground(COR_TEXTO);
+        lblTotal.setForeground(cores.COR_TEXTO);
         
         lblTotalVenda = new JLabel(formatoMoeda.format(0));
         lblTotalVenda.setFont(new Font("Segoe UI", Font.BOLD, 18));
-        lblTotalVenda.setForeground(COR_PRIMARIA);
+        lblTotalVenda.setForeground(cores.COR_PRIMARIA);
         
         painelTotal.add(lblTotal);
         painelTotal.add(lblTotalVenda);
         
        
         JPanel painelCarrinhoTitulo = new JPanel(new BorderLayout());
-        painelCarrinhoTitulo.setBackground(COR_FUNDO);
+        painelCarrinhoTitulo.setBackground(cores.COR_FUNDO);
         painelCarrinhoTitulo.setBorder(BorderFactory.createTitledBorder(
-            BorderFactory.createLineBorder(COR_DESTAQUE),
+            BorderFactory.createLineBorder(cores.COR_DESTAQUE),
             "Carrinho de Compras", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.TOP,
-            new Font("Segoe UI", Font.BOLD, 16), COR_PRIMARIA
+            new Font("Segoe UI", Font.BOLD, 16), cores.COR_PRIMARIA
         ));
         painelCarrinhoTitulo.add(scrollCarrinho, BorderLayout.CENTER);
         
@@ -292,12 +278,12 @@ public class TelaVendas extends JPanel {
 
     private JPanel criarPainelInferior() {
         JPanel painel = new JPanel(new GridLayout(2, 1, 20, 0));
-        painel.setBackground(COR_FUNDO);
+        painel.setBackground(cores.COR_FUNDO);
         painel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
         
        
         JPanel painelDados = new JPanel(new GridLayout(1, 6, 10, 10));
-        painelDados.setBackground(COR_PAINEL);
+        painelDados.setBackground(cores.COR_PAINEL);
         painelDados.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         
         JLabel lblCliente = new JLabel("Cliente:");
@@ -331,14 +317,14 @@ public class TelaVendas extends JPanel {
         
         
         JPanel painelFinalizacao = new JPanel(new BorderLayout(10, 10));
-        painelFinalizacao.setBackground(COR_PAINEL);
+        painelFinalizacao.setBackground(cores.COR_PAINEL);
         painelFinalizacao.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         
-        btnFinalizarVenda = criarBotao("FINALIZAR VENDA", COR_SUCESSO);
+        btnFinalizarVenda = criarBotao("FINALIZAR VENDA", cores.COR_SUCESSO);
         btnFinalizarVenda.setFont(new Font("Segoe UI", Font.BOLD, 16));
         btnFinalizarVenda.addActionListener(e -> finalizarVenda());
         
-        JButton btnCancelar = criarBotao("CANCELAR", COR_ALERTA);
+        JButton btnCancelar = criarBotao("CANCELAR", cores.COR_ALERTA);
         btnCancelar.setFont(new Font("Segoe UI", Font.BOLD, 16));
         btnCancelar.addActionListener(e -> limparTela());
         
@@ -362,7 +348,7 @@ public class TelaVendas extends JPanel {
         botao.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         botao.setFocusPainted(false);
         botao.setBackground(corFundo);
-        botao.setForeground(COR_TEXTO_CLARO);
+        botao.setForeground(cores.COR_TEXTO_CLARO);
         botao.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
         botao.setCursor(new Cursor(Cursor.HAND_CURSOR));
         

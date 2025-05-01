@@ -16,23 +16,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import controller.AdicionarLivroController;
+import view.cores.Cores;
 
 public class AdicionarLivroView extends JDialog {
-   
-    private static final Color COR_PRIMARIA = new Color(0x5D4037);
-    private static final Color COR_SECUNDARIA = new Color(0x8D6E63);
-    private static final Color COR_FUNDO = new Color(0xEFEBE9);
-    private static final Color COR_PAINEL = new Color(0xD7CCC8);
-    private static final Color COR_DESTAQUE = new Color(0xBCAAA4);
-    private static final Color COR_TEXTO = new Color(0x3E2723);
-    private static final Color COR_TEXTO_CLARO = new Color(0xFAFAFA);
-    private static final Color COR_BORDA = new Color(0xBCAAA4);
-    private static final Color COR_BOTAO = new Color(0x8D6E63);
-    private static final Color COR_BOTAO_HOVER = new Color(0x6D4C41);
-
-    private final Font FONTE_PADRAO = new Font("Segoe UI", Font.PLAIN, 14);
-    private final Font FONTE_TITULO = new Font("Segoe UI", Font.BOLD, 18);
-    private final Font FONTE_BOTAO = new Font("Segoe UI", Font.BOLD, 13);
 
     private JTextField campoISBN;
     private JTextField campoTitulo;
@@ -40,7 +26,7 @@ public class AdicionarLivroView extends JDialog {
     private JTextField campoEditora;
     private JTextField campoPreco;
     private JTextField campoQuantidade;
-    
+    private Cores cores;
     private AdicionarLivroController controller;;
 
     public AdicionarLivroView(Frame parent) {
@@ -56,22 +42,22 @@ public class AdicionarLivroView extends JDialog {
         setLayout(new BorderLayout(10, 10));
         setSize(400, 400);
         setLocationRelativeTo(null);
-        getContentPane().setBackground(COR_FUNDO);
+        getContentPane().setBackground(cores.COR_FUNDO);
 
        
         JPanel painelTitulo = new JPanel(new BorderLayout());
-        painelTitulo.setBackground(COR_PRIMARIA);
+        painelTitulo.setBackground(cores.COR_PRIMARIA);
         painelTitulo.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
         
         JLabel labelTitulo = new JLabel("Novo Livro");
-        labelTitulo.setFont(FONTE_TITULO);
-        labelTitulo.setForeground(COR_TEXTO_CLARO);
+        labelTitulo.setFont(cores.FONTE_TITULO);
+        labelTitulo.setForeground(cores.COR_TEXTO_CLARO);
         painelTitulo.add(labelTitulo, BorderLayout.CENTER);
 
        
         JPanel painelCampos = new JPanel(new GridLayout(6, 2, 10, 10));
         painelCampos.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        painelCampos.setBackground(COR_FUNDO);
+        painelCampos.setBackground(cores.COR_FUNDO);
 
        
         painelCampos.add(criarLabel("ISBN:"));
@@ -100,7 +86,7 @@ public class AdicionarLivroView extends JDialog {
 
        
         JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        painelBotoes.setBackground(COR_FUNDO);
+        painelBotoes.setBackground(cores.COR_FUNDO);
         painelBotoes.setBorder(BorderFactory.createEmptyBorder(0, 20, 15, 20));
         
         JButton botaoSalvar = criarBotao("Salvar");
@@ -126,19 +112,19 @@ public class AdicionarLivroView extends JDialog {
     
     private JLabel criarLabel(String texto) {
         JLabel label = new JLabel(texto);
-        label.setFont(FONTE_PADRAO);
-        label.setForeground(COR_TEXTO);
+        label.setFont(cores.FONTE_PADRAO);
+        label.setForeground(cores.COR_TEXTO);
         return label;
     }
     
     private JTextField criarCampoTexto() {
         JTextField campo = new JTextField(); 
-        campo.setFont(FONTE_PADRAO);
-        campo.setBackground(COR_PAINEL);
-        campo.setForeground(COR_TEXTO);
-        campo.setCaretColor(COR_TEXTO);
+        campo.setFont(cores.FONTE_PADRAO);
+        campo.setBackground(cores.COR_PAINEL);
+        campo.setForeground(cores.COR_TEXTO);
+        campo.setCaretColor(cores.COR_TEXTO);
         campo.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(COR_BORDA, 1),
+            BorderFactory.createLineBorder(cores.COR_BORDA, 1),
             BorderFactory.createEmptyBorder(5, 8, 5, 8)
         ));
         return campo;
@@ -147,9 +133,9 @@ public class AdicionarLivroView extends JDialog {
     private JButton criarBotao(String texto) {
         JButton botao = new JButton(texto);
         botao.setPreferredSize(new java.awt.Dimension(130, 36));
-        botao.setBackground(COR_BOTAO);
-        botao.setForeground(COR_TEXTO_CLARO);
-        botao.setFont(FONTE_BOTAO);
+        botao.setBackground(cores.COR_BOTAO);
+        botao.setForeground(cores.COR_TEXTO_CLARO);
+        botao.setFont(cores.FONTE_BOTAO);
         botao.setFocusPainted(false);
         botao.setCursor(new Cursor(Cursor.HAND_CURSOR));
         botao.setBorder(BorderFactory.createEmptyBorder(8, 15, 8, 15));
@@ -157,10 +143,10 @@ public class AdicionarLivroView extends JDialog {
 
         botao.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                botao.setBackground(COR_BOTAO_HOVER);
+                botao.setBackground(cores.COR_BOTAO_HOVER);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                botao.setBackground(COR_BOTAO);
+                botao.setBackground(cores.COR_BOTAO);
             }
         });
         
