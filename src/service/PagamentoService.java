@@ -7,7 +7,7 @@ public class PagamentoService {
 
     public Pagamento processarPagamento(String tipo, double total, double valorPago) {
         if (valorPago < total) {
-            return null; 
+            return null;  
         } 
 
         double troco = valorPago - total;

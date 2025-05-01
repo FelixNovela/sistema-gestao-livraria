@@ -7,17 +7,22 @@ public class Livro implements Serializable {
 	private String isbn;
     private String titulo;
     private String autor;
-    private String editora;
+    private String categoria;
     private double preco;
     private int quantidadeEmEstoque;
+    private boolean status;
 
+    public Livro() {
+    	
+    }
     public Livro(String isbn, String titulo, String autor, String editora, double preco, int quantidadeEmEstoque) {
         this.isbn = isbn;
         this.titulo = titulo;
         this.autor = autor;
-        this.editora = editora;
+        this.categoria = editora;
         this.preco = preco;
         this.quantidadeEmEstoque = quantidadeEmEstoque;
+        this.status = true;
     }
 
 	public String getIsbn() {
@@ -44,12 +49,12 @@ public class Livro implements Serializable {
 		this.autor = autor;
 	}
 
-	public String getEditora() {
-		return editora;
+	public String getCategoria() {
+		return categoria;
 	}
 
-	public void setEditora(String editora) {
-		this.editora = editora;
+	public void setCategoria(String editora) {
+		this.categoria = editora;
 	}
 
 	public double getPreco() {
@@ -68,9 +73,18 @@ public class Livro implements Serializable {
 		this.quantidadeEmEstoque = quantidadeEmEstoque;
 	}
 
+	public boolean isStatus() {
+		return status;
+	}
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 	@Override
 	public String toString() {
-		return "Livro [isbn=" + isbn + ", titulo=" + titulo + ", autor=" + autor + ", editora=" + editora + ", preco="
+		return "Livro [isbn=" + isbn + ", titulo=" + titulo + ", autor=" + autor + ", editora=" + categoria + ", preco="
 				+ preco + ", quantidadeEmEstoque=" + quantidadeEmEstoque + "]";
 	}
 

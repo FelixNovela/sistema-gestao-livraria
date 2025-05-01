@@ -12,9 +12,12 @@ public class LivroDAO extends DAOGenerico<Livro> {
 		escreverFicheiro(FICHEIRO, livros);
 	}
 
+	public void salvar(List<Livro> livros) {
+		escreverFicheiro(FICHEIRO, livros);
+	}
 	public List<Livro> listarTodos() {
 		return lerFicheiro(FICHEIRO);
-	}
+	} 
 
 	public Livro buscarPorIsbn(String isbn) {
 		return listarTodos().stream().filter(l -> l.getIsbn().equals(isbn)).findFirst().orElse(null); 

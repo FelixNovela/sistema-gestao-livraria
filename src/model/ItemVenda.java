@@ -5,12 +5,10 @@ import java.io.Serializable;
 public class ItemVenda implements Serializable {
 	private Livro livro;
 	private int quantidade;
-	private double precoUnitario;
 
-	public ItemVenda(Livro livro, int quantidade, double precoUnitario) {
+	public ItemVenda(Livro livro, int quantidade) {
 		this.livro = livro;
-		this.quantidade = quantidade; 
-		this.precoUnitario = precoUnitario;
+		this.quantidade = quantidade;  
 	}
 
 	public Livro getLivro() {
@@ -21,11 +19,10 @@ public class ItemVenda implements Serializable {
 		return quantidade;
 	}
 
-	public double getPrecoUnitario() {
-		return precoUnitario;
-	}
 
-	public double calcularSubtotal() {
-		return quantidade * precoUnitario;
+	@Override
+	public String toString() {
+		return "ItemVenda [livro=" + livro + ", quantidade=" + quantidade + ", preco=" + livro.getPreco() + "]";
 	}
+	
 }

@@ -13,7 +13,7 @@ public class Venda implements Serializable {
 	private LocalDate data;
 	private double valorTotal;
 
-	public Venda(int id, Cliente cliente, List<ItemVenda> itens, Pagamento pagamento, LocalDate data,
+	public Venda(int id, List<ItemVenda> itens, Pagamento pagamento, LocalDate data,
 			double valorTotal) {
 		this.id = id;
 		this.cliente = cliente;

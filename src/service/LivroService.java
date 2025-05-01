@@ -15,10 +15,15 @@ public class LivroService {
 		for (int i = 0; i < isbn.length(); i++) {
 			if (!Character.isDigit(isbn.charAt(i)))
 				return false;
-		}
+		} 
 		return true;
 	}
 
+	
+	public void verificarCadastro(String isbn) {
+		lvrdao.listarTodos().stream().filter(i -> i.getIsbn().equals(isbn)).findFirst().orElse(null);
+		
+	}
 	public void cadastrarLivro(Livro livro) {
 		lvrdao.adicionarLivro(livro);
 	}
@@ -28,10 +33,25 @@ public class LivroService {
 	}
 
 	public List<Livro> listarTodos() {
+		
 		return lvrdao.listarTodos();
 	}
 
 	public void atualizarEstoque(Livro livro, int novaQuantidade) {
 		lvrdao.atualizarEstoque(livro, novaQuantidade);
+	}
+	
+	public void excluir(String isbn) {
+		List<Livro> livros = listarTodos();
+		
+		for(int i = 0; i < livros.size(); i++) {
+			if(livros.get(i).getIsbn().equals(isbn)) {
+				livros.get(i).setStatus(false);
+				livros.set(i, livros.get(i));
+				lvrdao.salvar(livros);
+				break;
+			}
+			
+		}
 	}
 }
