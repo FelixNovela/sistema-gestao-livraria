@@ -15,11 +15,11 @@ public class Livro implements Serializable {
     public Livro() {
     	
     }
-    public Livro(String isbn, String titulo, String autor, String editora, double preco, int quantidadeEmEstoque) {
+    public Livro(String isbn, String titulo, String autor, String categoria, double preco, int quantidadeEmEstoque) {
         this.isbn = isbn;
         this.titulo = titulo;
         this.autor = autor;
-        this.categoria = editora;
+        this.categoria = categoria;
         this.preco = preco;
         this.quantidadeEmEstoque = quantidadeEmEstoque;
         this.status = true;
@@ -53,8 +53,8 @@ public class Livro implements Serializable {
 		return categoria;
 	}
 
-	public void setCategoria(String editora) {
-		this.categoria = editora;
+	public void setCategoria(String categoria) {
+		this.categoria = categoria;
 	}
 
 	public double getPreco() {
@@ -84,7 +84,7 @@ public class Livro implements Serializable {
 	}
 	@Override
 	public String toString() {
-		return "Livro [isbn=" + isbn + ", titulo=" + titulo + ", autor=" + autor + ", editora=" + categoria + ", preco="
+		return "Livro [isbn=" + isbn + ", titulo=" + titulo + ", autor=" + autor + ", Categoria=" + categoria + ", preco="
 				+ preco + ", quantidadeEmEstoque=" + quantidadeEmEstoque + "]";
 	}
 

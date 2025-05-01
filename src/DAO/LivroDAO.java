@@ -9,12 +9,13 @@ public class LivroDAO extends DAOGenerico<Livro> {
 	public void adicionarLivro(Livro livro) {
 		List<Livro> livros = listarTodos();
 		livros.add(livro);
-		escreverFicheiro(FICHEIRO, livros);
+		salvar(livros);
 	}
 
 	public void salvar(List<Livro> livros) {
 		escreverFicheiro(FICHEIRO, livros);
 	}
+	
 	public List<Livro> listarTodos() {
 		return lerFicheiro(FICHEIRO);
 	} 
@@ -28,9 +29,10 @@ public class LivroDAO extends DAOGenerico<Livro> {
 		for (Livro l : livros) {
 			if (l.getIsbn().equals(livro.getIsbn())) {
 				l.setQuantidadeEmEstoque(novaQuantidade);
+				salvar(livros);
 				break;
 			}
 		}
-		escreverFicheiro(FICHEIRO, livros);
+		
 	}
 }

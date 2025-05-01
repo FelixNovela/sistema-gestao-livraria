@@ -44,7 +44,7 @@ public class AdicionarLivroView extends JDialog {
         setLocationRelativeTo(null);
         getContentPane().setBackground(cores.COR_FUNDO);
 
-       
+        cores = new Cores();
         JPanel painelTitulo = new JPanel(new BorderLayout());
         painelTitulo.setBackground(cores.COR_PRIMARIA);
         painelTitulo.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));

@@ -18,20 +18,40 @@ public class Main {
         for(Livro lista : lv.listarTodos()) {
         	System.out.println(lista);
         }
+        System.out.println();
         
         LivroService ls = new LivroService();
-//        ls.cadastrarLivro(new Livro( "1939449","Bleach", "Ichigo","Mappa", 120, 4));
+//        ls.adicionarLivro(new Livro("9788577876445", "Naruto Gold Vol. 1", "Masashi Kishimoto", "Mangá", 1200, 18));
+//        ls.adicionarLivro(new Livro("9788545702870", "Akira Vol. 1", "Katsuhiro Otomo", "Mangá", 650, 10));
+//        ls.adicionarLivro(new Livro("9788573514709", "Watchmen", "Alan Moore", "Quadrinhos", 400, 8));
+//        ls.adicionarLivro(new Livro("9788532530781", "V de Vingança", "Alan Moore", "Quadrinhos", 1000, 6));
+//        ls.adicionarLivro(new Livro("9786555122151", "Fullmetal Alchemist Vol. 1", "Hiromu Arakawa", "Mangá",790.90, 12));
+//        ls.adicionarLivro(new Livro("9788577874779", "Death Note Black Edition Vol. 1", "Tsugumi Ohba", "Mangá", 700, 9));
+//        ls.adicionarLivro(new Livro("9788582332106", "O Fim da Eternidade", "Isaac Asimov", "Ficção Científica", 420, 5));
+//        ls.adicionarLivro(new Livro("9788535914847", "Neuromancer", "William Gibson", "Ficção Científica", 380.00, 7));
+//        ls.adicionarLivro(new Livro("9788580443644", "Fundação", "Isaac Asimov", "Ficção Científica", 390.90, 10));
+//        ls.adicionarLivro(new Livro("9781401285063", "Batman: A Piada Mortal", "Alan Moore", "Quadrinhos", 200.90, 6));
+//        ls.adicionarLivro(new Livro("9788542629590", "One Piece Vol. 1", "Eiichiro Oda", "Mangá", 990, 20));
+//       
+//        ls.adicionarLivro(new Livro("9788535909430", "2001: Uma Odisseia no Espaço", "Arthur C. Clarke", "Ficção Científica", 410.50, 7));
+//        ls.adicionarLivro(new Livro("9788545702733", "Tokyo Ghoul Vol. 1", "Sui Ishida", "Mangá", 360.90, 14));
+//        ls.adicionarLivro(new Livro("9788576573086", "Sandman Vol. 1: Prelúdios e Noturnos", "Neil Gaiman", "Quadrinhos", 500, 5));
+//        ls.adicionarLivro(new Livro("9788592795055", "O Guia do Mochileiro das Galáxias", "Douglas Adams", "Ficção Científica", 350, 11));
+
+        
+        //ls.atualizarEstoque("9780316066525", 30);
+//        ls.cadastrarLivro(neLivro( "1939449","Bleach", "Ichigo","Mappa", 120, 4));
 //        ls.cadastrarLivro(new Livro( "2738494","Black cover", "Asta","Kira", 100, 2));
 //        ls.cadastrarLivro(new Livro( "8393263","Solo leveling", "Jin hoo","Mappa", 160, 6));
 //        
         //Cliente cl = new Cliente(1, "teste", "sgss", TipoDocumento.valueOf("BI"), "13131");
-        ClienteService cls = new ClienteService();
+       // ClienteService cls = new ClienteService();
        // cls.cadastrarCliente(cl);
         
-        
-        for(Cliente lista : cls.listarClientes()) {
-        	System.out.println(lista);
-        }
+//        
+//        for(Cliente lista : cls.listarClientes()) {
+//        	System.out.println(lista);
+//        }
         
         VendaService vds = new VendaService();
        // vds.venderLivro(1, 1, "23", 1, "DINHEIRO", 7);

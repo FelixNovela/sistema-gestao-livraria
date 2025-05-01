@@ -20,7 +20,7 @@ public class DAOGenerico<T> {
 	protected <T> void escreverFicheiro(String caminho, List<T> lista) {
 		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(caminho))) {
 			oos.writeObject(lista);
-		} catch (IOException e) {
+		} catch (IOException e) { 
 			System.out.println("Erro ao escrever no ficheiro: " + caminho);
 		}
 	}

@@ -5,12 +5,12 @@ import model.enums.TipoPagamento;
 
 public class PagamentoService {
 
-    public Pagamento processarPagamento(String tipo, double total, double valorPago) {
-        if (valorPago < total) {
-            return null;  
+    public Pagamento processarPagamento(String tipo, double totalDaVenda, double valorPago) {
+        if (valorPago < totalDaVenda) {
+            return null;   
         } 
 
-        double troco = valorPago - total;
-        return new Pagamento(TipoPagamento.valueOf(tipo), valorPago, troco); 
+        double troco = valorPago - totalDaVenda;
+        return new Pagamento(TipoPagamento.valueOf(tipo.toUpperCase()), valorPago, troco); 
     }
 }

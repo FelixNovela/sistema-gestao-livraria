@@ -24,7 +24,7 @@ public class LivroService {
 		lvrdao.listarTodos().stream().filter(i -> i.getIsbn().equals(isbn)).findFirst().orElse(null);
 		
 	}
-	public void cadastrarLivro(Livro livro) {
+	public void adicionarLivro(Livro livro) {
 		lvrdao.adicionarLivro(livro);
 	}
 
@@ -37,8 +37,13 @@ public class LivroService {
 		return lvrdao.listarTodos();
 	}
 
-	public void atualizarEstoque(Livro livro, int novaQuantidade) {
+	public void atualizarEstoque(String isbn, int novaQuantidade) {
+		Livro livro = lvrdao.buscarPorIsbn(isbn);
 		lvrdao.atualizarEstoque(livro, novaQuantidade);
+	}
+	
+	public void atualizarPreco() {
+		
 	}
 	
 	public void excluir(String isbn) {

@@ -35,12 +35,12 @@ public class EditarLivro extends JDialog {
     private JTextField campoPreco;
     private JTextField campoEstoque;
 
-    public EditarLivro(Frame owner, Livro livro, LivroService livroService, DefaultTableModel modeloTabela) {
-        super(owner, "Editar Livro", true);
+    public EditarLivro(Frame framePai, Livro livro, LivroService livroService, DefaultTableModel modeloTabela) {
+        super(framePai, "Editar Livro", true);
         this.livro = livro;
         this.livroService = livroService;
         this.modeloTabela = modeloTabela;
-
+        cores = new Cores();
         inicializarComponentes();
         preencherCampos();
     }

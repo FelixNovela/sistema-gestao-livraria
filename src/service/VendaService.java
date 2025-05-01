@@ -29,10 +29,10 @@ public class VendaService {
 
 		return true;
 	}
-	
-	public double calcularValorTotalDasVendas() { 
+
+	public double calcularValorTotalDasVendas() {
 		double soma = 0;
-		for(Venda v : vdao.listarTodos()) {
+		for (Venda v : vdao.listarTodos()) {
 			soma += v.getValorTotal();
 		}
 		return soma;
@@ -46,19 +46,19 @@ public class VendaService {
 		return soma;
 	}
 
-	public boolean efetuarPagamento(String formaDePagamento, double valorPago, int idVenda) {
-		double valorAPagar = calcularValorTotalAPagar();
-
-	    pagamento = pagamentoService.processarPagamento(formaDePagamento, valorAPagar, valorPago);
+	public Pagamento verificarPagamento(String formaDePagamento, double totalDaVenda, double valorPago) {
+		pagamento = pagamentoService.processarPagamento(formaDePagamento, totalDaVenda, valorPago);
 		if (pagamento == null) {
-			return false;
+			return null;
 		} 
-		
-		Venda venda = new Venda(idVenda, listaItemVenda, pagamento, LocalDate.now(), valorAPagar);
-		vdao.adicionarVenda(venda);
-		return true; 
+		return pagamento;
 	}
+ 
+	public void efetuarPagamento(Pagamento pagamento) {
+		Venda venda = new Venda(1, listaItemVenda, pagamento, LocalDate.now(), pagamento.getValorPago());
+		vdao.adicionarVenda(venda);
 
+	}
 
 	public List<Venda> listarVendas() {
 		return vdao.listarTodos();

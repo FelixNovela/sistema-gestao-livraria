@@ -94,7 +94,7 @@ public class AdicionarLivroController {
 
             
             Livro novoLivro = new Livro(isbn, titulo, autor, editora, preco, quantidade);
-            livroService.cadastrarLivro(novoLivro);
+            livroService.adicionarLivro(novoLivro);
 
            
             tabelaLivros.addRow(new Object[]{

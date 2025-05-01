@@ -11,7 +11,7 @@ import view.cores.Cores;
 public class PaginaInicial extends JFrame {
    
 	
-
+ 
     private JPanel painelDeConteudoPrincipal;
     private PaginaInicialController controller;
     private Cores cores;
@@ -23,7 +23,7 @@ public class PaginaInicial extends JFrame {
     }
 
     private void configurarJanela() {
-        setTitle("Sistema de Gestão de Livraria");
+        setTitle("Sistema de Gestao de Livraria");
         setSize(1200, 700);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -107,7 +107,7 @@ public class PaginaInicial extends JFrame {
 
         header.add(welcome, BorderLayout.WEST);
         header.add(icons, BorderLayout.EAST);
-
+        
         return header;
     }
 
