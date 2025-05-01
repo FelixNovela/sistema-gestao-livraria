@@ -349,12 +349,9 @@ public class Login {
         }
     }
     
-    /**
-     * Verifica as credenciais de login e direciona para a interface adequada
-     * baseado no nível de acesso do usuário
-     * @param email Email do usuário
-     * @param senha Senha do usuário
-     */
+     //Verifica as credenciais de login e direciona para a interface adequada
+     // baseado no nível de acesso do usuário
+  
     public void verificarLogin(String email, String senha) {
         boolean emailValid = false;
         boolean passwordValid = false;
