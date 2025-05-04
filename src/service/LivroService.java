@@ -28,6 +28,16 @@ public class LivroService {
 		lvrdao.adicionarLivro(livro);
 	}
 
+	public int totalLivros() {
+		int total = 0;
+		for(Livro livro : listarTodos()) {
+			if(livro.isStatus()) {
+				total += 1;
+			}
+		}
+		return total;
+	}
+	
 	public Livro buscarPorIsbn(String isbn) {
 		return lvrdao.buscarPorIsbn(isbn);
 	}
@@ -42,8 +52,9 @@ public class LivroService {
 		lvrdao.atualizarEstoque(livro, novaQuantidade);
 	}
 	
-	public void atualizarPreco() {
-		
+	public void atualizarPreco(String isbn, double novoPreco) {
+		Livro livro = lvrdao.buscarPorIsbn(isbn);
+		lvrdao.atualizaPreco(livro, novoPreco);
 	}
 	
 	public void excluir(String isbn) {

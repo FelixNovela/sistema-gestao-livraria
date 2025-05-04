@@ -11,15 +11,15 @@ import model.Livro;
 import model.Pagamento;
 import service.LivroService;
 import service.VendaService;
-import view.TelaVendas;
+import view.VendasView;
 
 public class VendasController {
     
-    private TelaVendas view;
+    private VendasView view;
     private LivroService livroService;
     private VendaService vendaService;
     private Pagamento pagamento;
-    public VendasController(TelaVendas view) {
+    public VendasController(VendasView view) {
         this.view = view;
         this.livroService = new LivroService();
         this.vendaService = new VendaService();
@@ -112,7 +112,7 @@ public class VendasController {
                 quantidade = 1; 
             }
             
-            // Verificar estoque disponível
+            
             String tituloCarrinho = modeloTabelaCarrinho.getValueAt(linha, 0).toString();
             int estoqueDisponivel = 0;
             
@@ -204,7 +204,7 @@ public class VendasController {
         if (view.getCampoCliente().getText().isEmpty()) {
             view.mostrarMensagem(
                 "Insira o nome do cliente para finalizar a venda.", 
-                "Campo Cliente null", 
+                "Campo Funcionario null", 
                 JOptionPane.WARNING_MESSAGE
             );
             return;
@@ -222,43 +222,49 @@ public class VendasController {
         
         
         
- 
-        
-        
-       
-        
-        DefaultTableModel modeloTabelaLivros = view.getModeloTabelaLivros();
-        for (int i = 0; i < modeloTabelaCarrinho.getRowCount(); i++) {
-            String tituloCarrinho = modeloTabelaCarrinho.getValueAt(i, 0).toString();
+       if(pagamento != null) {
+    	   
            
-            int quantidadeVendida = Integer.parseInt(modeloTabelaCarrinho.getValueAt(i, 1).toString());
-            
-            for (int j = 0; j < modeloTabelaLivros.getRowCount(); j++) {
-                if (modeloTabelaLivros.getValueAt(j, 1).equals(tituloCarrinho)) {
-                	
-                	String isbn = modeloTabelaLivros.getValueAt(j, 0).toString();
-                	
-                	vendaService.adicionarLivroNaListaItemVenda(isbn, quantidadeVendida);
-                	
-                    int estoqueAtual = Integer.parseInt(modeloTabelaLivros.getValueAt(j, 4).toString());
-                    modeloTabelaLivros.setValueAt(estoqueAtual - quantidadeVendida, j, 4);
-                    livroService.atualizarEstoque(isbn, estoqueAtual - quantidadeVendida);
-                    break;
-                }
-            }
-        }
-        vendaService.efetuarPagamento(pagamento);
+           
+           DefaultTableModel modeloTabelaLivros = view.getModeloTabelaLivros();
+           for (int i = 0; i < modeloTabelaCarrinho.getRowCount(); i++) {
+               String tituloCarrinho = modeloTabelaCarrinho.getValueAt(i, 0).toString();
+              
+               int quantidadeVendida = Integer.parseInt(modeloTabelaCarrinho.getValueAt(i, 1).toString());
+               
+               for (int j = 0; j < modeloTabelaLivros.getRowCount(); j++) {
+                   if (modeloTabelaLivros.getValueAt(j, 1).equals(tituloCarrinho)) {
+                   	
+                   	String isbn = modeloTabelaLivros.getValueAt(j, 0).toString();
+                   	
+                   	vendaService.adicionarLivroNaListaItemVenda(isbn, quantidadeVendida);
+                   	
+                       int estoqueAtual = Integer.parseInt(modeloTabelaLivros.getValueAt(j, 4).toString());
+                       modeloTabelaLivros.setValueAt(estoqueAtual - quantidadeVendida, j, 4);
+                       livroService.atualizarEstoque(isbn, estoqueAtual - quantidadeVendida);
+                       break;
+                   }
+               }
+           }
+           
+           String cliente = view.getCampoCliente().getText();
+           String total = view.getLblTotalVenda().getText();
+           
+           
+           vendaService.efetuarPagamento(pagamento, cliente);
+       }
+        
+      
         
        
       
-        String cliente = view.getCampoCliente().getText();
-        String total = view.getLblTotalVenda().getText();
+        
         
         view.mostrarMensagem(
             "Venda realizada com sucesso\n\n" +
-            "Cliente: " + cliente + "\n" +
+            //"Funcionario: " + cliente + "\n" +
             "Forma de Pagamento: " + formaPagamento + "\n" +
-            "Total Da venda: " + total+ "\n"+
+            //"Total Da venda: " + total+ "\n"+
             "Valor Pago: " + valorPago+"\n"+
             "Trocos : " + (valorPago - totalVenda),
             "Venda Finalizada", 

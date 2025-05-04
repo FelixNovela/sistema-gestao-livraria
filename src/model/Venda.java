@@ -6,28 +6,40 @@ import java.util.List;
 
 public class Venda implements Serializable {
 	private static final long serialVersionUID = 1L;
-	private int id;
-	private Cliente cliente;
+	private String id;
+	private String cliente;
+	private String funcionario;
 	private List<ItemVenda> itens;
 	private Pagamento pagamento;
 	private LocalDate data;
 	private double valorTotal;
 
-	public Venda(int id, List<ItemVenda> itens, Pagamento pagamento, LocalDate data,
+	public Venda(String id, String cliente, String funcionario,List<ItemVenda> itens, Pagamento pagamento, LocalDate data,
 			double valorTotal) {
 		this.id = id;
 		this.cliente = cliente;
+		this.funcionario = funcionario;
 		this.itens = itens;
 		this.pagamento = pagamento;
 		this.data = data;
 		this.valorTotal = valorTotal;
 	}
 
-	public int getId() {
+	public String getId() {
 		return id;
 	}
+	public String getFuncionario() {
+		return funcionario;
+	}
 
-	public Cliente getCliente() {
+	public void setFuncionario(String funcionario) {
+		this.funcionario = funcionario;
+	}
+
+	public void setCliente(String cliente) {
+		this.cliente = cliente;
+	}
+	public String getCliente() {
 		return cliente;
 	}
 
@@ -46,6 +58,8 @@ public class Venda implements Serializable {
 	public double getValorTotal() {
 		return valorTotal;
 	}
+
+	
 
 	@Override
 	public String toString() {

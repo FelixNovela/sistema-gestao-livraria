@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import DAO.ClienteDAO;
 import DAO.LivroDAO;
 import DAO.VendaDAO;
 import model.ItemVenda;
@@ -38,6 +37,36 @@ public class VendaService {
 		return soma;
 	}
 
+	
+	public double totalVendas() {
+		List<Venda> vendas = listarVendas();
+		double valorTotal = 0;
+		for(Venda venda : vendas) {
+			valorTotal += venda.getPagamento().getValorTotalDaVenda();
+		}
+		return valorTotal;
+	}
+	public String gerarIdDaVenda() {
+	    List<Venda> vendas = listarVendas();
+
+	    int ultimoId = 0;
+
+	    if (!vendas.isEmpty()) {
+	        Venda ultimaVenda = vendas.get(vendas.size() - 1);
+	        String ultimoIdString = ultimaVenda.getId();
+
+	        if (ultimoIdString != null && !ultimoIdString.isEmpty()) {
+	            ultimoId = Integer.parseInt(ultimoIdString);
+	        }
+	    }
+
+	    ultimoId++;
+
+	    return String.format("%04d", ultimoId);
+	}
+
+
+
 	public double calcularValorTotalAPagar() {
 		double soma = 0;
 		for (ItemVenda lista : listaItemVenda) {
@@ -54,8 +83,8 @@ public class VendaService {
 		return pagamento;
 	}
  
-	public void efetuarPagamento(Pagamento pagamento) {
-		Venda venda = new Venda(1, listaItemVenda, pagamento, LocalDate.now(), pagamento.getValorPago());
+	public void efetuarPagamento(Pagamento pagamento, String nomeCliente) {
+		Venda venda = new Venda(gerarIdDaVenda(),nomeCliente,"MInato", listaItemVenda, pagamento, LocalDate.now(), pagamento.getValorPago());
 		vdao.adicionarVenda(venda);
 
 	}

@@ -35,4 +35,17 @@ public class LivroDAO extends DAOGenerico<Livro> {
 		}
 		
 	}
+	 
+	public void atualizaPreco(Livro livro, double novoPreco) {
+		List<Livro> livros = listarTodos();
+		for (Livro l : livros) {
+			if (l.getIsbn().equals(livro.getIsbn())) { 
+				l.setPreco(novoPreco);
+				salvar(livros);
+				break;
+			}
+		}
+		
+	}
+	
 }

@@ -2,14 +2,16 @@ package controller;
 
 import javax.swing.JPanel;
 
-import view.PaginaInicial;
-import view.TelaLivrosView;
-import view.TelaVendas;
+import view.PaginaInicialView;
+import view.FuncionarioView;
+import view.ListaVendasView;
+import view.LivrosView;
+import view.VendasView;
 
 public class PaginaInicialController {
-    private PaginaInicial view;
+    private PaginaInicialView view;
 
-    public PaginaInicialController(PaginaInicial view) {
+    public PaginaInicialController(PaginaInicialView view) {
         this.view = view;
     }
 
@@ -19,14 +21,17 @@ public class PaginaInicialController {
                 view.trocarConteudo(view.criarPaginaInicial());
                 break;
             case "Livros":
-                view.trocarConteudo(new TelaLivrosView());
+                view.trocarConteudo(new LivrosView());
                 break;
             case "Vendas":
-            	view.trocarConteudo(new TelaVendas());
+            	view.trocarConteudo(new VendasView());
                 break;
                
-            case "Clientes":
-                view.trocarConteudo(new JPanel());
+            case "Lista Vendas":
+                view.trocarConteudo(new ListaVendasView());
+                break;
+            case "Funcionarios":
+                view.trocarConteudo(new FuncionarioView());
                 break;
             default:
                 view.trocarConteudo(new JPanel());

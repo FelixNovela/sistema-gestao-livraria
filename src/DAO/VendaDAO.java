@@ -17,7 +17,7 @@ public class VendaDAO extends DAOGenerico<Venda> {
 		return lerFicheiro(FICHEIRO);
 	}
 
-	public Venda buscarPorId(int id) {
+	public Venda buscarPorId(String id) {
 		return listarTodos().stream().filter(v -> v.getId() == id).findFirst().orElse(null);
 	}
 }
