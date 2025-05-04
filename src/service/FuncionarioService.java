@@ -91,6 +91,11 @@ public class FuncionarioService {
 		}
 	}
 
+	
+	public String retornarNomeFuncionario(String usuario) {
+		Funcionario funcionario = listarTodos().stream().filter(f -> f.getUsuario().equalsIgnoreCase(usuario)).findFirst().orElse(null);
+		return funcionario.getNome();
+	}
 	public void atualizarFuncionario(Funcionario funcionarioAtualizado) {
 		funcionarioDAO.atualizarFuncionario(funcionarioAtualizado);
 	}
@@ -101,6 +106,7 @@ public class FuncionarioService {
 
 
 	public boolean autenticar(String usuario, String senha) {
+		
 		return funcionarioDAO.autenticar(usuario, senha);
 	}
 }

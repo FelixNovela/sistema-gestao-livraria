@@ -158,7 +158,7 @@ public class ListaVendasView extends JPanel {
     }
 
     private JScrollPane criarTabelaListaVendas() {
-        String[] colunas = {"ID da Venda", "Funcionario", "Funcionario", "Valor Total","Valor Pago","Trocos", "Tipo de Pagamento", "Data da venda", "Acoes"};
+        String[] colunas = {"ID da Venda", "Cliente", "Funcionario", "Valor Total","Valor Pago","Trocos", "Tipo de Pagamento", "Data da venda", "Acoes"};
 
         modeloTabela = new DefaultTableModel(colunas, 0) {
             @Override

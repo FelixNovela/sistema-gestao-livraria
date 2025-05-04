@@ -10,6 +10,7 @@ import model.ItemVenda;
 import model.Livro;
 import model.Pagamento;
 import model.Venda;
+import view.PaginaInicialView;
 
 public class VendaService {
 	private VendaDAO vdao = new VendaDAO();
@@ -17,6 +18,8 @@ public class VendaService {
 	private PagamentoService pagamentoService = new PagamentoService();
 	public List<ItemVenda> listaItemVenda = new ArrayList<>();
 	private Pagamento pagamento;
+	private String nomeUser;
+	FuncionarioService funcionarioService;
 
 	public boolean adicionarLivroNaListaItemVenda(String isbn, int quantidade) {
 		Livro livro = ldao.buscarPorIsbn(isbn);
@@ -82,9 +85,18 @@ public class VendaService {
 		} 
 		return pagamento;
 	}
+	
+	public void pegarNomeDoFuncionario(String nomeUser) {
+		funcionarioService = new FuncionarioService();
+		
+		this.nomeUser = funcionarioService.retornarNomeFuncionario(nomeUser);
+		 
+	}
+	
+	
  
 	public void efetuarPagamento(Pagamento pagamento, String nomeCliente) {
-		Venda venda = new Venda(gerarIdDaVenda(),nomeCliente,"MInato", listaItemVenda, pagamento, LocalDate.now(), pagamento.getValorPago());
+		Venda venda = new Venda(gerarIdDaVenda(),nomeCliente,nomeUser, listaItemVenda, pagamento, LocalDate.now(), pagamento.getValorPago());
 		vdao.adicionarVenda(venda);
 
 	}

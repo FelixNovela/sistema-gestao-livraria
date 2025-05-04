@@ -53,6 +53,8 @@ public class FuncionarioDAO extends DAOGenerico<Funcionario> {
         escreverFicheiro(FICHEIRO, funcionarios);
     }
     
+    
+    
     public List<Funcionario> buscarPorNome(String nome) {
         return listarTodos().stream()
                 .filter(f -> f.getNome().toLowerCase().contains(nome.toLowerCase()))

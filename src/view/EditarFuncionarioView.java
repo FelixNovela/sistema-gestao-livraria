@@ -99,7 +99,7 @@ public class EditarFuncionarioView extends JDialog {
 		painelCampos.add(campoSenha);
 
 		painelCampos.add(criarLabel("Nível de Acesso:"));
-		comboNivelAcesso = new JComboBox<>(new String[] { "ADMIN", "GERENTE", "FUNCIONARIO" });
+		comboNivelAcesso = new JComboBox<>(new String[] { "Administrador", "Gerente", "Vendedor"});
 		comboNivelAcesso.setBackground(Cores.COR_PAINEL);
 		comboNivelAcesso.setForeground(Cores.COR_TEXTO);
 		comboNivelAcesso.setFont(cores.FONTE_PADRAO);

@@ -144,7 +144,7 @@ public class AdicionarFuncionarioView extends JDialog {
     
     
     private JComboBox<String> criarComboBoxNivelAcesso() {
-        String[] niveisAcesso = {"Administrador", "Gerente", "Vendedor",};
+        String[] niveisAcesso = {"Administrador", "Gerente", "Vendedor"};
         JComboBox<String> comboBox = new JComboBox<>(niveisAcesso);
         comboBox.setFont(cores.FONTE_PADRAO);
         comboBox.setBackground(cores.COR_PAINEL);

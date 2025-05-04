@@ -18,8 +18,10 @@ public class PaginaInicialView extends JFrame {
     private JPanel painelDeConteudoPrincipal;
     private PaginaInicialController controller;
     private Cores cores;
+    private String nomeUsuario;
     public PaginaInicialView(String nomeUsuario) {
         controller = new PaginaInicialController(this);
+        this.nomeUsuario = nomeUsuario;
         configurarMinhaFrame();
         criarATelaGeral(nomeUsuario);
         setVisible(true);
@@ -49,7 +51,7 @@ public class PaginaInicialView extends JFrame {
         sidebar.setBackground(Cores.COR_PRIMARIA);
         sidebar.setPreferredSize(new Dimension(200, getHeight()));
 
-        String[] botoes = {"Home", "Livros", "Vendas","Lista Vendas", "Funcionarios","Emprestimos"};
+        String[] botoes = {"Home", "Livros", "Vendas","Lista Vendas", "Funcionarios","Sair"};
 
         for (String texto : botoes) {
             sidebar.add(Box.createVerticalStrut(10));
@@ -240,8 +242,13 @@ public class PaginaInicialView extends JFrame {
         painel.add(scroll, BorderLayout.CENTER);
         return painel;
     }
+    
 
-    public void trocarConteudo(JPanel novoPainel) {
+    public String getNomeUsuario() {
+		return nomeUsuario;
+	}
+
+	public void trocarConteudo(JPanel novoPainel) {
         painelDeConteudoPrincipal.removeAll();
         painelDeConteudoPrincipal.add(novoPainel);
         painelDeConteudoPrincipal.revalidate();

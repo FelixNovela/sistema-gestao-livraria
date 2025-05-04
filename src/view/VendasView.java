@@ -27,14 +27,15 @@ public class VendasView extends JPanel {
     private JTextField valorPago;
     private JButton btnFinalizarVenda;
     private DecimalFormat formatoMoeda = new DecimalFormat("MT 0.00");
-    
+    private String nomeUsuario;
    
     private VendasController controller;
     
-    public VendasView() {
+    public VendasView(String nomeUsuario) {
         cores = new Cores();
         controller = new VendasController(this);
         
+        this.nomeUsuario = nomeUsuario;
         setLayout(new BorderLayout(20, 20));
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         setBackground(cores.COR_FUNDO);
@@ -362,7 +363,17 @@ public class VendasView extends JPanel {
         return lblTotalVenda;
     }
     
-    public JTextField getCampoCliente() {
+    
+    
+    public String getNomeUsuario() {
+		return nomeUsuario;
+	}
+
+	public void setNomeUsuario(String nomeUsuario) {
+		this.nomeUsuario = nomeUsuario;
+	}
+
+	public JTextField getCampoCliente() {
         return cmbCliente;
     }
     

@@ -238,7 +238,7 @@ public class VendasController {
                    	String isbn = modeloTabelaLivros.getValueAt(j, 0).toString();
                    	
                    	vendaService.adicionarLivroNaListaItemVenda(isbn, quantidadeVendida);
-                   	
+                   	vendaService.pegarNomeDoFuncionario(view.getNomeUsuario());
                        int estoqueAtual = Integer.parseInt(modeloTabelaLivros.getValueAt(j, 4).toString());
                        modeloTabelaLivros.setValueAt(estoqueAtual - quantidadeVendida, j, 4);
                        livroService.atualizarEstoque(isbn, estoqueAtual - quantidadeVendida);
