@@ -1,15 +1,17 @@
 package controller;
 
+import java.awt.Frame;
+import java.util.List;
+
+import javax.swing.JTable;
+import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
+
 import model.Livro;
 import service.LivroService;
-import view.LivrosView;
 import view.AdicionarLivroView;
 import view.BotoesEditarLivro;
-
-import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.util.List;
+import view.LivrosView;
 
 public class LivrosController {
     
@@ -66,11 +68,11 @@ public class LivrosController {
     public void filtrarLivros(String textoPesquisa) {
         List<Livro> livros = livroService.listarTodos();
         Object[][] dadosFiltrados = livros.stream()
-            .filter(livro -> 
+            .filter(livro -> (
                 livro.getTitulo().toLowerCase().contains(textoPesquisa) ||
                 livro.getAutor().toLowerCase().contains(textoPesquisa) ||
                 livro.getIsbn().toLowerCase().contains(textoPesquisa) ||
-                livro.getCategoria().toLowerCase().contains(textoPesquisa)
+                livro.getCategoria().toLowerCase().contains(textoPesquisa)) && (livro.isStatus())
             )
             .map(livro -> new Object[]{
                 livro.getIsbn(), 

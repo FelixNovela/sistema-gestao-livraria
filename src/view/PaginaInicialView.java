@@ -1,29 +1,64 @@
 package view;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 import controller.PaginaInicialController;
-import service.FuncionarioService;
+import model.Livro;
+import model.Venda;
+import service.UsuarioService;
 import service.LivroService;
 import service.VendaService;
 import view.cores.Cores;
 
 public class PaginaInicialView extends JFrame {
    
-	
- 
+    private Point pontoInicial;
     private JPanel painelDeConteudoPrincipal;
     private PaginaInicialController controller;
     private Cores cores;
     private String nomeUsuario;
+    
+  
+    private JTable tabelaUltimasVendas;
+    private JTable tabelaEstoqueBaixo;
+    private DefaultTableModel modeloUltimasVendas;
+    private DefaultTableModel modeloEstoqueBaixo;
+    public PaginaInicialView() {
+    	
+    }
     public PaginaInicialView(String nomeUsuario) {
         controller = new PaginaInicialController(this);
         this.nomeUsuario = nomeUsuario;
         configurarMinhaFrame();
         criarATelaGeral(nomeUsuario);
+        setUndecorated(true);
         setVisible(true);
     }
 
@@ -51,7 +86,7 @@ public class PaginaInicialView extends JFrame {
         sidebar.setBackground(Cores.COR_PRIMARIA);
         sidebar.setPreferredSize(new Dimension(200, getHeight()));
 
-        String[] botoes = {"Home", "Livros", "Vendas","Lista Vendas", "Funcionarios","Sair"};
+        String[] botoes = {"Home", "Livros", "Usuarios","Vendas", "Lista Vendas","Relatorios","Meus Dados","Sair"};
 
         for (String texto : botoes) {
             sidebar.add(Box.createVerticalStrut(10));
@@ -94,10 +129,10 @@ public class PaginaInicialView extends JFrame {
         header.setPreferredSize(new Dimension(getWidth(), 50));
         header.setBackground(Cores.COR_PRIMARIA);
 
-        JLabel welcome = new JLabel("Bem-vindo, " + nomeUsuario);
-        welcome.setForeground(Cores.COR_TEXTO_CLARO);
-        welcome.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        welcome.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 10));
+        JLabel mensagemBoasVindas = new JLabel("Bem-vindo, " + nomeUsuario);
+        mensagemBoasVindas.setForeground(Cores.COR_TEXTO_CLARO);
+        mensagemBoasVindas.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        mensagemBoasVindas.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 10));
 
         JPanel icons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         icons.setOpaque(false);
@@ -110,23 +145,45 @@ public class PaginaInicialView extends JFrame {
         icons.add(Box.createHorizontalStrut(10));
         icons.add(userIcon);
 
-        header.add(welcome, BorderLayout.WEST);
-        header.add(icons, BorderLayout.EAST);
+        header.add(mensagemBoasVindas, BorderLayout.WEST);
+        header.add(icons, BorderLayout.EAST); 
+        
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                pontoInicial = e.getPoint();
+            }
+        });
+
+        addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                Point pontoAtual = SwingUtilities.convertPoint(header, e.getPoint(), getParent());
+               
+                int novoX = e.getXOnScreen() - pontoInicial.x;
+                int novoY = e.getYOnScreen() - pontoInicial.y;
+                setLocation(novoX, novoY);
+            }
+        });
         
         return header;
     }
 
     public JPanel criarPaginaInicial() {
-    	LivroService livros = new LivroService();
-    	VendaService vendaService = new VendaService();
-    	FuncionarioService funcionarioService = new FuncionarioService();
-    	String totalLivros = String.valueOf(livros.totalLivros());
-    	String totalFuncionarios = String.valueOf(funcionarioService.totalFuncionarios());
-    	
-    	String totalVendas = String.format("%.2f",vendaService.totalVendas());
-    	
-    	
-    	
+        LivroService livros = new LivroService();
+        VendaService vendaService = new VendaService();
+        UsuarioService funcionarioService = new UsuarioService();
+        String totalLivros = String.valueOf(livros.totalLivros());
+        String totalFuncionarios = String.valueOf(funcionarioService.totalFuncionarios());
+        
+        String totalVendas = String.format("%.2f", vendaService.totalVendas());
+        
+        int somaLivrosV = 0;
+        
+        for(int i = 0; i < vendaService.listarVendas().size(); i++) {
+        	somaLivrosV += vendaService.listarVendas().get(i).getItens().size();
+        }
+        
         JPanel pagina = new JPanel(new BorderLayout(0, 20));
         pagina.setBackground(Cores.COR_FUNDO);
         pagina.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -134,14 +191,26 @@ public class PaginaInicialView extends JFrame {
         JPanel cards = new JPanel(new GridLayout(1, 4, 20, 20));
         cards.setBackground(Cores.COR_FUNDO);
         cards.add(createCard("Total de Livros", totalLivros));
-        cards.add(createCard("Total de Funcionarios", totalFuncionarios));
+        cards.add(createCard("Total de Usuarios", totalFuncionarios));
         cards.add(createCard("Vendas do Mes", totalVendas));
-        cards.add(createCard("Emprestimos", "20"));
+        cards.add(createCard("Livros Vendidos", String.valueOf(somaLivrosV)));
 
         JPanel tabelas = new JPanel(new GridLayout(1, 2, 20, 0));
         tabelas.setBackground(Cores.COR_FUNDO);
-        tabelas.add(criarTabelaUltimasVendas());
-        tabelas.add(criarTabelaEstoqueBaixo());
+        
+
+        List<Venda> ultimasVendasOriginal = vendaService.ultimasVendas();
+        List<Venda> ultimasVendas = new ArrayList<>(ultimasVendasOriginal);
+        Collections.reverse(ultimasVendas);
+
+        List<Livro> livrosComEstoqueBaixo = livros.livrosComEstoqueBaixo();
+        
+        
+       
+
+
+        tabelas.add(criarTabelaUltimasVendas(ultimasVendas));
+        tabelas.add(criarTabelaEstoqueBaixo(livrosComEstoqueBaixo));
 
         pagina.add(cards, BorderLayout.NORTH);
         pagina.add(tabelas, BorderLayout.CENTER);
@@ -155,8 +224,6 @@ public class PaginaInicialView extends JFrame {
         card.setBorder(BorderFactory.createLineBorder(Cores.COR_DESTAQUE));
         card.setPreferredSize(new Dimension(200, 100));
 
-        
-
         JPanel textos = new JPanel();
         textos.setLayout(new BoxLayout(textos, BoxLayout.Y_AXIS));
         textos.setOpaque(false);
@@ -169,39 +236,112 @@ public class PaginaInicialView extends JFrame {
         textos.add(lblTitulo);
         textos.add(lblValor);
 
-     
         card.add(textos, BorderLayout.CENTER);
         return card;
     }
 
-    private JPanel criarTabelaUltimasVendas() {
+    
+    private JPanel criarTabelaUltimasVendas(List<Venda> vendas) {
+        String[] colunas = {"Usuario", "Livro", "Valor", "Data"};
+        
+        
+        modeloUltimasVendas = new DefaultTableModel(colunas, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; 
+            }
+        };
+        
+        
+        
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        
+        if (vendas != null && !vendas.isEmpty()) {
+            for (Venda venda : vendas) {
+            	
+                modeloUltimasVendas.addRow(new Object[]{
+                    venda.getFuncionario().getNome(),
+                    venda.getItens().size(),
+                    String.format("%.2f", venda.getPagamento().getValorTotalDaVenda()),
+                    venda.getData().format(formatter)
+                    
+                });
+            }
+        } 
+        
         return criarTabelaPainel(
             "Últimas Vendas",
-            new String[]{"Funcionario", "Livro", "Valor", "Data"},
-            new Object[][]{
-                {"Naruto", "Naruto", "45", "25/04/2025"},
-                {"Kira", "Kira", "120", "24/04/2025"},
-                {"Asta", "Black Cover", "70", "23/04/2025"},
-                {"Ichigo", "Bleach", "90", "22/04/2025"}
-            },
+            modeloUltimasVendas,
             false
         );
     }
 
-    private JPanel criarTabelaEstoqueBaixo() {
+    
+    private JPanel criarTabelaEstoqueBaixo(List<Livro> livros) {
+        String[] colunas = {"Livro", "Unidades Disponíveis"};
+        
+       
+        modeloEstoqueBaixo = new DefaultTableModel(colunas, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        
+        
+        if (livros != null && !livros.isEmpty()) {
+            for (Livro livro : livros) {
+                modeloEstoqueBaixo.addRow(new Object[]{
+                    livro.getTitulo(),
+                    livro.getQuantidadeEmEstoque()
+                });
+            }
+        } 
+        
         return criarTabelaPainel(
             "Estoque Baixo",
-            new String[]{"Livro", "Unidades Disponíveis"},
-            new Object[][]{
-                {"Hunter X Hunter", "2"},
-                {"Flash", "3"},
-                {"Black Cover", "1"}
-            },
+            modeloEstoqueBaixo,
             true
         );
     }
+     
+   
+    public void atualizarDadosTabela() {
+        LivroService livroService = new LivroService();
+        VendaService vendaService = new VendaService();
+        
+       
+        modeloUltimasVendas.setRowCount(0);
+        modeloEstoqueBaixo.setRowCount(0);
+        
+        
+        List<Venda> ultimasVendas = vendaService.ultimasVendas();
+        List<Livro> livrosComEstoqueBaixo = livroService.livrosComEstoqueBaixo();
+        
+        if (ultimasVendas != null && !ultimasVendas.isEmpty()) {
+            for (Venda venda : ultimasVendas) {
+                modeloUltimasVendas.addRow(new Object[]{
+                    venda.getFuncionario().getNome(),
+                    venda.getItens().size(),
+                    String.format("%.2f", venda.getPagamento().getValorTotalDaVenda()),
+                    venda.getData()
+                });
+            }
+        }
+        
+        
+        if (livrosComEstoqueBaixo != null && !livrosComEstoqueBaixo.isEmpty()) {
+            for (Livro livro : livrosComEstoqueBaixo) {
+                modeloEstoqueBaixo.addRow(new Object[]{
+                    livro.getTitulo(),
+                   livro.getQuantidadeEmEstoque()
+               });
+           }
+       }
+   }
 
-    private JPanel criarTabelaPainel(String titulo, String[] colunas, Object[][] dados, boolean estoqueBaixo) {
+   
+    private JPanel criarTabelaPainel(String titulo, DefaultTableModel modelo, boolean estoqueBaixo) {
         JPanel painel = new JPanel(new BorderLayout());
         painel.setBackground(Cores.COR_PAINEL);
         painel.setBorder(BorderFactory.createTitledBorder(
@@ -210,30 +350,52 @@ public class PaginaInicialView extends JFrame {
             new Font("Segoe UI", Font.BOLD, 16), Cores.COR_PRIMARIA
         ));
 
-        JTable tabela = new JTable(new DefaultTableModel(dados, colunas)) {
+        JTable tabela = new JTable(modelo) {
             @Override
             public Component prepareRenderer(javax.swing.table.TableCellRenderer renderer, int row, int col) {
                 Component c = super.prepareRenderer(renderer, row, col);
+
                 if (!isRowSelected(row)) {
+                   
                     c.setBackground((row % 2 == 0) ? Cores.COR_FUNDO : Cores.COR_DESTAQUE);
+
+                    // Verifica se estamos na coluna de estoque baixo e se é a coluna correta
                     if (estoqueBaixo && col == 1) {
-                        try {
-                            int unidades = Integer.parseInt(getValueAt(row, col).toString());
-                            if (unidades <= 3) c.setBackground(Cores.COR_ALERTA);
-                        } catch (NumberFormatException ignored) {}
+                        Object valor = getValueAt(row, col);
+                        if (valor != null) {
+                            try {
+                                int unidades = Integer.parseInt(valor.toString());
+                                if (unidades <= 4) {
+                                    c.setBackground(Cores.COR_ALERTA);
+                                }
+                            } catch (NumberFormatException ignored) {
+                                
+                            }
+                        }
                     }
                 } else {
-                    c.setBackground(Cores.COR_DESTAQUE);
+                 
+                	c.setBackground(Cores.COR_PAINEL);
                 }
+
                 c.setForeground(Cores.COR_TEXTO);
+
                 return c;
             }
+
         };
 
         tabela.setRowHeight(30);
         tabela.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         tabela.setGridColor(Cores.COR_DESTAQUE);
         tabela.setFillsViewportHeight(true);
+        
+       
+        if (estoqueBaixo) {
+            tabelaEstoqueBaixo = tabela;
+        } else {
+            tabelaUltimasVendas = tabela;
+        }
 
         JScrollPane scroll = new JScrollPane(tabela);
         scroll.getViewport().setBackground(Cores.COR_PAINEL);
@@ -242,13 +404,12 @@ public class PaginaInicialView extends JFrame {
         painel.add(scroll, BorderLayout.CENTER);
         return painel;
     }
-    
 
     public String getNomeUsuario() {
-		return nomeUsuario;
-	}
+        return nomeUsuario;
+    }
 
-	public void trocarConteudo(JPanel novoPainel) {
+    public void trocarConteudo(JPanel novoPainel) {
         painelDeConteudoPrincipal.removeAll();
         painelDeConteudoPrincipal.add(novoPainel);
         painelDeConteudoPrincipal.revalidate();

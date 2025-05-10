@@ -15,30 +15,29 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import controller.AdicionarFuncionarioController;
-import model.enums.TipoDocumento;
+import controller.AdicionarUsuarioController;
 import view.cores.Cores;
 
 public class AdicionarFuncionarioView extends JDialog {
 
    
     private JTextField campoNome;
-    private JTextField campoTelefone;
+    private JTextField campoEmail;
     
     private JTextField numeroDoBI;
     private JTextField campoUsuario;
     private JPasswordField campoSenha;
     private JComboBox<String> comboNivelAcesso;
     private Cores cores;
-    private AdicionarFuncionarioController controller;
+    private AdicionarUsuarioController controller;
 
     public AdicionarFuncionarioView(Frame parent) {
-        super(parent, "Adicionar Funcionário", true);
+        super(parent, "Cadastrar Usuario", true);
         cores = new Cores();
         inicializarComponentes();
     }
     
-    public void setController(AdicionarFuncionarioController controller) {
+    public void setController(AdicionarUsuarioController controller) {
         this.controller = controller;
     }
 
@@ -52,7 +51,7 @@ public class AdicionarFuncionarioView extends JDialog {
         painelTitulo.setBackground(cores.COR_PRIMARIA);
         painelTitulo.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
         
-        JLabel labelTitulo = new JLabel("Novo Funcionário");
+        JLabel labelTitulo = new JLabel("Novo Usuario");
         labelTitulo.setFont(cores.FONTE_TITULO);
         labelTitulo.setForeground(cores.COR_TEXTO_CLARO);
         painelTitulo.add(labelTitulo, BorderLayout.CENTER);
@@ -60,20 +59,20 @@ public class AdicionarFuncionarioView extends JDialog {
         JPanel painelCampos = new JPanel(new GridLayout(6, 2, 10, 10));
         painelCampos.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         painelCampos.setBackground(cores.COR_FUNDO);
+        
+        painelCampos.add(criarLabel("Número Do BI:"));
+        numeroDoBI = criarCampoTexto();
+        painelCampos.add(numeroDoBI);
 
         painelCampos.add(criarLabel("Nome:"));
         campoNome = criarCampoTexto();
         painelCampos.add(campoNome);
 
-        painelCampos.add(criarLabel("Telefone:"));
-        campoTelefone = criarCampoTexto();
-        painelCampos.add(campoTelefone);
+        painelCampos.add(criarLabel("Email:"));
+        campoEmail = criarCampoTexto();
+        painelCampos.add(campoEmail);
 
-        painelCampos.add(criarLabel("Número Do BI:"));
-        numeroDoBI = criarCampoTexto();
-        painelCampos.add(numeroDoBI);
-
-        painelCampos.add(criarLabel("Usuario:"));
+        painelCampos.add(criarLabel("Username:"));
         campoUsuario = criarCampoTexto();
         painelCampos.add(campoUsuario);
 
@@ -181,8 +180,8 @@ public class AdicionarFuncionarioView extends JDialog {
         return campoNome.getText().trim();
     }
     
-    public String getTelefone() {
-        return campoTelefone.getText().trim();
+    public String getEmail() {
+        return campoEmail.getText().trim();
     }
     
     public String getNumeroDoBI() {

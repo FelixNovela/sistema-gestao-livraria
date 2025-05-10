@@ -13,9 +13,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import controller.AdicionarLivroController;
 import model.ItemVenda;
-import model.Livro;
 import model.Venda;
 import service.VendaService;
 import view.cores.Cores;

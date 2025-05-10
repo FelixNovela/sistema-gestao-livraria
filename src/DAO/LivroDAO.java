@@ -1,6 +1,7 @@
 package DAO;
 
 import java.util.List;
+
 import model.Livro;
 
 public class LivroDAO extends DAOGenerico<Livro> {

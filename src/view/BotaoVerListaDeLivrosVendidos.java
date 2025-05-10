@@ -20,7 +20,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
-import model.Livro;
 import service.VendaService;
 
 public class BotaoVerListaDeLivrosVendidos extends AbstractCellEditor implements TableCellRenderer, TableCellEditor {

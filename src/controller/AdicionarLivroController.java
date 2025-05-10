@@ -25,7 +25,7 @@ public class AdicionarLivroController {
             String isbn = view.getIsbn();
             String titulo = view.getTitulo();
             String autor = view.getAutor();
-            String editora = view.getEditora();
+            String editora = view.getCategoria();
             String precoTexto = view.getPreco();
             String quantidadeTexto = view.getQuantidade();
             

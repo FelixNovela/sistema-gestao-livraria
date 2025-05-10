@@ -1,12 +1,10 @@
 package controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-import model.ItemVenda;
 import model.Livro;
 import model.Pagamento;
 import service.LivroService;
@@ -31,16 +29,21 @@ public class VendasController {
         
         List<Livro> livros = livroService.listarTodos();
         for (Livro livro : livros) {
-            modeloTabelaLivros.addRow(new Object[]{
-                livro.getIsbn(), 
-                livro.getTitulo(), 
-                livro.getAutor(), 
-                livro.getCategoria(), 
-                livro.getQuantidadeEmEstoque(),
-                String.format("%.2f", livro.getPreco()),
-            });
+        	if(livro.getQuantidadeEmEstoque() != 0) {
+        		 modeloTabelaLivros.addRow(new Object[]{
+        	                livro.getIsbn(), 
+        	                livro.getTitulo(), 
+        	                livro.getAutor(), 
+        	                livro.getCategoria(), 
+        	                livro.getQuantidadeEmEstoque(),
+        	                String.format("%.2f", livro.getPreco()),
+        	            });
+        	}
+           
         }
     }
+    
+    
     
     public void adicionarAoCarrinho() {
         int linhaSelecionada = view.getTabelaLivros().getSelectedRow();
@@ -180,6 +183,64 @@ public class VendasController {
         
         view.getLblTotalVenda().setText(view.getFormatoMoeda().format(total));
         
+        // Se o método de pagamento for Transferencia, atualize o valor pago
+        if ("Transferencia".equals(view.getCmbFormaPagamento().getSelectedItem())) {
+            view.getValorPago().setText(String.format("%.2f", total));
+        }
+    }
+    public void pesquisarLivros(String termoBusca) {
+        if (termoBusca == null || termoBusca.equals("Pesquisar...")) {
+            carregarDadosIniciais();
+            return;
+        }
+        
+        DefaultTableModel modeloTabelaLivros = view.getModeloTabelaLivros();
+        modeloTabelaLivros.setRowCount(0);
+        
+        String termoLowerCase = termoBusca.toLowerCase();
+        
+        List<Livro> livros = livroService.listarTodos();
+        for (Livro livro : livros) {
+            if (livro.getQuantidadeEmEstoque() != 0 && 
+                (livro.getTitulo().toLowerCase().contains(termoLowerCase) || 
+                 livro.getAutor().toLowerCase().contains(termoLowerCase) || 
+                 livro.getCategoria().toLowerCase().contains(termoLowerCase) || 
+                 livro.getIsbn().toLowerCase().contains(termoLowerCase))) {
+                
+                modeloTabelaLivros.addRow(new Object[]{
+                    livro.getIsbn(), 
+                    livro.getTitulo(), 
+                    livro.getAutor(), 
+                    livro.getCategoria(), 
+                    livro.getQuantidadeEmEstoque(),
+                    String.format("%.2f", livro.getPreco()),
+                });
+            }
+        }
+    }
+    
+    public void atualizarFormaPagamento() {
+        String formaPagamento = view.getCmbFormaPagamento().getSelectedItem().toString();
+        
+        if ("Transferencia".equals(formaPagamento)) {
+            // Preencher o valor automaticamente com o total da venda
+            String totalVendaString = view.getLblTotalVenda().getText().toString();
+            totalVendaString = totalVendaString.replace("MT", "").trim();
+            try {
+                double totalVenda = Double.parseDouble(totalVendaString);
+                view.getValorPago().setText(String.format("%.2f", totalVenda));
+            } catch (NumberFormatException e) {
+                view.getValorPago().setText("0.00");
+            }
+            
+            // Bloquear a edição do campo
+            view.getValorPago().setEditable(false);
+            view.getValorPago().setEnabled(false);
+        } else {
+            // Permitir a edição do campo para outras formas de pagamento
+            view.getValorPago().setEditable(true);
+            view.getValorPago().setEnabled(true);
+        }
     }
     
     public void finalizarVenda() {
@@ -204,7 +265,7 @@ public class VendasController {
         if (view.getCampoCliente().getText().isEmpty()) {
             view.mostrarMensagem(
                 "Insira o nome do cliente para finalizar a venda.", 
-                "Campo Funcionario null", 
+                "Campo Usuario null", 
                 JOptionPane.WARNING_MESSAGE
             );
             return;
@@ -238,7 +299,7 @@ public class VendasController {
                    	String isbn = modeloTabelaLivros.getValueAt(j, 0).toString();
                    	
                    	vendaService.adicionarLivroNaListaItemVenda(isbn, quantidadeVendida);
-                   	vendaService.pegarNomeDoFuncionario(view.getNomeUsuario());
+                   	
                        int estoqueAtual = Integer.parseInt(modeloTabelaLivros.getValueAt(j, 4).toString());
                        modeloTabelaLivros.setValueAt(estoqueAtual - quantidadeVendida, j, 4);
                        livroService.atualizarEstoque(isbn, estoqueAtual - quantidadeVendida);
@@ -250,7 +311,8 @@ public class VendasController {
            String cliente = view.getCampoCliente().getText();
            String total = view.getLblTotalVenda().getText();
            
-           
+           carregarDadosIniciais();
+           vendaService.setNomeUser(view.getNomeUsuario());
            vendaService.efetuarPagamento(pagamento, cliente);
        }
         
@@ -262,7 +324,7 @@ public class VendasController {
         
         view.mostrarMensagem(
             "Venda realizada com sucesso\n\n" +
-            //"Funcionario: " + cliente + "\n" +
+            //"Usuario: " + cliente + "\n" +
             "Forma de Pagamento: " + formaPagamento + "\n" +
             //"Total Da venda: " + total+ "\n"+
             "Valor Pago: " + valorPago+"\n"+
@@ -280,6 +342,8 @@ public class VendasController {
         view.getCampoCliente().setText("");
         view.getCmbFormaPagamento().setSelectedIndex(0);
         view.getValorPago().setText("0");
+        view.getValorPago().setEditable(true);
+        view.getValorPago().setEnabled(true);
         atualizarTotalVenda();
     }
 }

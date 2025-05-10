@@ -20,9 +20,10 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
 import controller.FuncionarioController;
-import service.FuncionarioService;
+import service.UsuarioService;
+import view.cores.Cores;
 
-public class FuncionarioView extends JPanel {
+public class UsuarioView extends JPanel {
 
     private static final Color COR_PRIMARIA = new Color(0x5D4037);
     private static final Color COR_SECUNDARIA = new Color(0x8D6E63);
@@ -45,14 +46,14 @@ public class FuncionarioView extends JPanel {
     
     private FuncionarioController controller;
 
-    public FuncionarioView() {
+    public UsuarioView() {
         setLayout(new BorderLayout(10, 10));
         setBackground(COR_FUNDO);
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         add(criarHeader(), BorderLayout.NORTH);
         add(criarPainelPrincipal(), BorderLayout.CENTER);
-        FuncionarioController controller = new FuncionarioController(this, new FuncionarioService());
+        FuncionarioController controller = new FuncionarioController(this, new UsuarioService());
     }
     
     public void setController(FuncionarioController controller) {
@@ -65,7 +66,7 @@ public class FuncionarioView extends JPanel {
         header.setBackground(COR_PRIMARIA);
         header.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
-        JLabel titulo = new JLabel("Funcionários");
+        JLabel titulo = new JLabel("Usuarios");
         titulo.setFont(FONTE_TITULO);
         titulo.setForeground(COR_TEXTO_CLARO);
 
@@ -158,12 +159,12 @@ public class FuncionarioView extends JPanel {
     }
 
     private JScrollPane criarTabelaFuncionarios() {
-        String[] colunas = {"ID", "Nome", "Telefone", "Numero do BI", "Usuario", "Senha", "Nivel de acesso", "Acoes"};
+        String[] colunas = {"Numero do BI", "Nome", "Email", "Username", "Senha", "Nivel de Acesso", "Acoes"};
 
         modeloTabela = new DefaultTableModel(colunas, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 7;
+                return column == 6;
             }
         };
 
@@ -174,7 +175,7 @@ public class FuncionarioView extends JPanel {
                 if (!isRowSelected(row)) {
                     c.setBackground(row % 2 == 0 ? COR_FUNDO : COR_DESTAQUE);
                 } else {
-                    c.setBackground(COR_DESTAQUE);
+                	c.setBackground(Cores.COR_PAINEL);
                 }
                 c.setForeground(COR_TEXTO);
                 return c;

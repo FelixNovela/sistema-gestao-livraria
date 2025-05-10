@@ -1,16 +1,18 @@
 package service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import DAO.LivroDAO;
 import DAO.VendaDAO;
+import model.Usuario;
 import model.ItemVenda;
 import model.Livro;
 import model.Pagamento;
 import model.Venda;
-import view.PaginaInicialView;
 
 public class VendaService {
 	private VendaDAO vdao = new VendaDAO();
@@ -19,7 +21,8 @@ public class VendaService {
 	public List<ItemVenda> listaItemVenda = new ArrayList<>();
 	private Pagamento pagamento;
 	private String nomeUser;
-	FuncionarioService funcionarioService;
+	UsuarioService funcionarioService;
+	Usuario funcionario;
 
 	public boolean adicionarLivroNaListaItemVenda(String isbn, int quantidade) {
 		Livro livro = ldao.buscarPorIsbn(isbn);
@@ -86,17 +89,36 @@ public class VendaService {
 		return pagamento;
 	}
 	
-	public void pegarNomeDoFuncionario(String nomeUser) {
-		funcionarioService = new FuncionarioService();
+	public void setNomeUser(String nomeUser) {
 		
-		this.nomeUser = funcionarioService.retornarNomeFuncionario(nomeUser);
+		this.nomeUser = nomeUser;
+		
 		 
 	}
+	public Usuario retornarFuncionario() {
+		
+		funcionarioService = new UsuarioService();
+		
+		this.funcionario = funcionarioService.buscarPorUsuario(nomeUser);
+		return this.funcionario;
+	}
 	
-	
+	public List<Venda> ultimasVendas(){
+		List<Venda> ultimasVendas = listarVendas().stream()
+			    .skip(Math.max(0, listarVendas().size() - 5))
+			    .collect(Collectors.toList());
+		return ultimasVendas;
+
+	}
  
 	public void efetuarPagamento(Pagamento pagamento, String nomeCliente) {
-		Venda venda = new Venda(gerarIdDaVenda(),nomeCliente,nomeUser, listaItemVenda, pagamento, LocalDate.now(), pagamento.getValorPago());
+		
+		Usuario funcionario = retornarFuncionario();
+		
+		UsuarioService usuarioService = new UsuarioService();
+		Venda venda = new Venda(gerarIdDaVenda(),nomeCliente,funcionario,listaItemVenda, pagamento, LocalDateTime.now(), pagamento.getValorPago());
+		funcionario.adicionarVenda(venda);
+		usuarioService.atualizarFuncionario(funcionario);
 		vdao.adicionarVenda(venda);
 
 	}

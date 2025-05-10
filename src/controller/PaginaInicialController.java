@@ -2,11 +2,13 @@ package controller;
 
 import javax.swing.JPanel;
 
-import view.PaginaInicialView;
-import view.FuncionarioView;
+import view.UsuarioView;
 import view.ListaVendasView;
 import view.LivrosView;
 import view.LoginView;
+import view.PaginaInicialView;
+import view.PerfilView;
+import view.RelatoriosView;
 import view.VendasView;
 
 public class PaginaInicialController {
@@ -24,15 +26,21 @@ public class PaginaInicialController {
 		case "Livros":
 			view.trocarConteudo(new LivrosView());
 			break;
+		case "Usuarios":
+			view.trocarConteudo(new UsuarioView());
+			break;
+
 		case "Vendas":
 			view.trocarConteudo(new VendasView(view.getNomeUsuario()));
 			break;
-
 		case "Lista Vendas":
 			view.trocarConteudo(new ListaVendasView());
 			break;
-		case "Funcionarios":
-			view.trocarConteudo(new FuncionarioView());
+		case "Relatorios":
+			view.trocarConteudo(new RelatoriosView());
+			break;
+		case "Meus Dados":
+			view.trocarConteudo(new PerfilView());
 			break;
 		case "Sair":
 			LoginController loginController = new LoginController(new LoginView());

@@ -8,30 +8,32 @@ import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
 import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import model.Funcionario;
+import org.apache.commons.validator.EmailValidator;
+
+import model.Usuario;
 import model.enums.TipoDocumento;
-import service.FuncionarioService;
+import service.UsuarioService;
 import view.cores.Cores;
 
 public class EditarFuncionarioView extends JDialog {
 
 	private Cores cores;
 
-	private Funcionario funcionario;
-	private FuncionarioService funcionarioService;
+	private Usuario funcionario;
+	private UsuarioService funcionarioService;
 	private DefaultTableModel modeloTabela;
 
 	private JTextField campoNome;
-	private JTextField campoTelefone;
+	private JTextField campoEmail;
 	private JComboBox<TipoDocumento> comboTipoDocumento;
 	private JTextField campoNumeroDoBI;
 	private JComboBox<String> campoCargo;
@@ -40,7 +42,7 @@ public class EditarFuncionarioView extends JDialog {
 	private JPasswordField campoSenha;
 	private JComboBox<String> comboNivelAcesso;
 
-	public EditarFuncionarioView(Frame framePai, Funcionario funcionario, FuncionarioService funcionarioService,
+	public EditarFuncionarioView(Frame framePai, Usuario funcionario, UsuarioService funcionarioService,
 			DefaultTableModel modeloTabela) {
 		super(framePai, "Editar Funcionário", true);
 		this.funcionario = funcionario;
@@ -71,7 +73,7 @@ public class EditarFuncionarioView extends JDialog {
         labelBI.setForeground(Cores.COR_TEXTO_CLARO);
         painelTitulo.add(labelBI, BorderLayout.EAST);
 
-		JPanel painelCampos = new JPanel(new GridLayout(8, 2, 10, 10));
+		JPanel painelCampos = new JPanel(new GridLayout(5, 2, 10, 10));
 		painelCampos.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 		painelCampos.setBackground(Cores.COR_FUNDO);
 
@@ -80,12 +82,13 @@ public class EditarFuncionarioView extends JDialog {
 		campoNome.setEditable(false);
 		painelCampos.add(campoNome);
 
-		painelCampos.add(criarLabel("Telefone:"));
-		campoTelefone = criarCampoTexto();
-		painelCampos.add(campoTelefone);
+		painelCampos.add(criarLabel("Email:"));
+		campoEmail = criarCampoTexto();
+		painelCampos.add(campoEmail);
 
-		painelCampos.add(criarLabel("Usuario:"));
+		painelCampos.add(criarLabel("Username:"));
 		campoUsuario = criarCampoTexto();
+		campoUsuario.setEditable(false);
 		painelCampos.add(campoUsuario);
 
 		painelCampos.add(criarLabel("Senha:"));
@@ -105,7 +108,7 @@ public class EditarFuncionarioView extends JDialog {
 		comboNivelAcesso.setFont(cores.FONTE_PADRAO);
 		painelCampos.add(comboNivelAcesso);
 
-		JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		painelBotoes.setBackground(Cores.COR_FUNDO);
 		painelBotoes.setBorder(BorderFactory.createEmptyBorder(0, 20, 15, 20));
 
@@ -167,7 +170,7 @@ public class EditarFuncionarioView extends JDialog {
 
 	private void preencherCampos() {
 		campoNome.setText(funcionario.getNome());
-		campoTelefone.setText(funcionario.getTelefone());
+		campoEmail.setText(funcionario.getEmail());
 
 		
 
@@ -179,7 +182,7 @@ public class EditarFuncionarioView extends JDialog {
 	private void salvar() {
 		try {
 			String nome = campoNome.getText().trim();
-			String telefone = campoTelefone.getText().trim();
+			String email = campoEmail.getText().trim();
 
 			String numeroDoBI = funcionario.getNumeroDoBI();
 
@@ -187,23 +190,41 @@ public class EditarFuncionarioView extends JDialog {
 			String senha = new String(campoSenha.getPassword());
 			String nivelAcesso = (String) comboNivelAcesso.getSelectedItem();
 
-			if (nome.isEmpty() || telefone.isEmpty() || usuario.isEmpty() || senha.isEmpty()) {
-				JOptionPane.showMessageDialog(this, "Todos os campos são obrigatórios.", "Erro de Validação",
+			if (nome.isEmpty() || email.isEmpty() || usuario.isEmpty() || senha.isEmpty()) {
+				JOptionPane.showMessageDialog(this, "Todos os campos são obrigatórios.", "Erro de Validacao",
 						JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 
-			funcionario.setTelefone(telefone); 
+			 EmailValidator validator = EmailValidator.getInstance();
+
+	            if (!validator.isValid(email)){
+	            	JOptionPane.showMessageDialog(this, "E-mail inválido",
+	                         "Erro de Validacao",
+							JOptionPane.ERROR_MESSAGE);
+	                     return;
+	            }
+	            
+//	            if (!funcionarioService.verificarEmail(email)){
+//	            	JOptionPane.showMessageDialog(this, "E-mail existe",
+//	                         "Erro de Validacao",
+//							JOptionPane.ERROR_MESSAGE);
+//	                     return;
+//	            }
+			
+			funcionario.setEmail(email); 
 			funcionario.setUsuario(usuario);
 			funcionario.setSenha(senha);
 			funcionario.setNivelAcesso(nivelAcesso);
 
+			
 			funcionarioService.atualizarFuncionario(funcionario);
 
 			atualizarTabela();
 
-			JOptionPane.showMessageDialog(this, "Funcionário atualizado com sucesso!", "Sucesso",
+			JOptionPane.showMessageDialog(this, "Usuario atualizado com sucesso!", "Sucesso",
 					JOptionPane.INFORMATION_MESSAGE);
+			atualizarTabela();
 
 			dispose();
 		} catch (Exception ex) {
@@ -214,13 +235,12 @@ public class EditarFuncionarioView extends JDialog {
 
 	private void atualizarTabela() {
 		for (int i = 0; i < modeloTabela.getRowCount(); i++) {
-			if (modeloTabela.getValueAt(i, 0).equals(funcionario.getId())) {
+			if (modeloTabela.getValueAt(i, 0).equals(funcionario.getNumeroDoBI())) {
 				modeloTabela.setValueAt(funcionario.getNome(), i, 1);
-				modeloTabela.setValueAt(funcionario.getTelefone(), i, 2);
-				modeloTabela.setValueAt(funcionario.getNumeroDoBI(), i, 3);
-				modeloTabela.setValueAt(funcionario.getUsuario(),i, 4);
-				modeloTabela.setValueAt(funcionario.getSenha(), i, 5);
-				modeloTabela.setValueAt(funcionario.getNivelAcesso(), i, 6);
+				modeloTabela.setValueAt(funcionario.getEmail(), i, 2);
+				modeloTabela.setValueAt(funcionario.getUsuario(), i, 3);
+				modeloTabela.setValueAt(funcionario.getSenha(),i, 4);
+				modeloTabela.setValueAt(funcionario.getNivelAcesso(), i, 5);
 				break;
 			}
 		}

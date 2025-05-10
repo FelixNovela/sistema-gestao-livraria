@@ -1,19 +1,22 @@
 package controller;
 
+import java.util.regex.Pattern;
+
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-import model.Funcionario;
-import model.enums.TipoDocumento;
-import service.FuncionarioService;
+import org.apache.commons.validator.EmailValidator;
+
+import model.Usuario;
+import service.UsuarioService;
 import view.AdicionarFuncionarioView;
 
-public class AdicionarFuncionarioController {
+public class AdicionarUsuarioController {
     private AdicionarFuncionarioView view;
-    private FuncionarioService funcionarioService;
+    private UsuarioService funcionarioService;
     private DefaultTableModel tabelaFuncionarios;
     private String id;
-    public AdicionarFuncionarioController(AdicionarFuncionarioView view, FuncionarioService funcionarioService, DefaultTableModel tabelaFuncionarios) {
+    public AdicionarUsuarioController(AdicionarFuncionarioView view, UsuarioService funcionarioService, DefaultTableModel tabelaFuncionarios) {
         this.view = view;
         this.funcionarioService = funcionarioService;
         this.tabelaFuncionarios = tabelaFuncionarios;
@@ -21,19 +24,33 @@ public class AdicionarFuncionarioController {
         this.view.setController(this);
     }
     
-    public void salvarFuncionario() {
+    @SuppressWarnings("deprecation")
+	public void salvarFuncionario() {
         try {
            
         	
             String nome = view.getNome();
-            String telefone = view.getTelefone();
+            String email = view.getEmail();
             String numeroDocumento = view.getNumeroDoBI();
             String usuario = view.getUsuario();
             String senha = view.getSenha();
             String nivelAcesso = view.getNivelAcesso();
             
            
-            if (nome.isEmpty() || telefone.isEmpty() || 
+            EmailValidator validator = EmailValidator.getInstance();
+
+            if (!validator.isValid(email)){
+            	 JOptionPane.showMessageDialog(view, 
+                         "E-mail inválido",
+                         "Erro de Validacao", 
+                         JOptionPane.ERROR_MESSAGE);
+                     return;
+            }
+            
+            
+         
+            
+            if (nome.isEmpty() || email.isEmpty() || 
                 numeroDocumento.isEmpty() || 
                 usuario.isEmpty() || senha.isEmpty()) {
                 JOptionPane.showMessageDialog(view, 
@@ -45,14 +62,21 @@ public class AdicionarFuncionarioController {
             
             
            
-            if (!funcionarioService.validarDocumento(numeroDocumento)) {
+            if (!funcionarioService.validarEDocumento(numeroDocumento)) {
                 JOptionPane.showMessageDialog(view, 
                     "Número de documento inválido",
+                    "Erro de Validacao", 
+                    0);
+                return;
+            }
+
+            if (!funcionarioService.verificarBI(numeroDocumento)) {
+                JOptionPane.showMessageDialog(view, 
+                    "Número de BI ja cadastrado",
                     "Erro de Validacao", 
                     JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            
             
             if (funcionarioService.buscarPorUsuario(usuario) != null) {
                 JOptionPane.showMessageDialog(view, 
@@ -63,7 +87,7 @@ public class AdicionarFuncionarioController {
             }
             
             id = funcionarioService.gerarIdFuncionario();
-            Funcionario novoFuncionario = new Funcionario(id,nome,telefone,numeroDocumento,usuario,senha,nivelAcesso);
+            Usuario novoFuncionario = new Usuario(id,nome,email,numeroDocumento.toUpperCase(),usuario,senha,nivelAcesso);
             
            
             
@@ -71,11 +95,11 @@ public class AdicionarFuncionarioController {
 
             
             tabelaFuncionarios.addRow(new Object[]{
-                id, nome, telefone, numeroDocumento, usuario,senha,nivelAcesso
+                numeroDocumento.toUpperCase(), nome, email, usuario,senha,nivelAcesso
             });
 
             JOptionPane.showMessageDialog(view, 
-                "Funcionário adicionado com sucesso",
+                "Usuario adicionado com sucesso",
                 "Sucesso", 
                 JOptionPane.INFORMATION_MESSAGE);
                 

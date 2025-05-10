@@ -1,12 +1,36 @@
 package view;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
 
 import controller.LoginController;
 import view.cores.Cores;
+import view.vendedor.PaginaInicialVendedorView;
 
 public class LoginView extends JFrame {
     
@@ -19,7 +43,15 @@ public class LoginView extends JFrame {
         controller = new LoginController(this);
         configurarFrame();
         criarTelaLogin();
+        FlatMacLightLaf.setup();
+        addMouseListener(new MouseAdapter() {
+        	public void mousePressed(MouseEvent e) {
+        		
+        	}
+		});
         setVisible(true);
+        
+     
     }
     
     private void configurarFrame() {
@@ -108,7 +140,7 @@ public class LoginView extends JFrame {
         formularioPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         
        
-        JLabel labelUsuario = new JLabel("Usuário:");
+        JLabel labelUsuario = new JLabel("Usuario:");
         labelUsuario.setFont(new Font("Serif", Font.BOLD, 16));
         labelUsuario.setForeground(Cores.LOGIN_COR_TEXTO);
         labelUsuario.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -240,6 +272,11 @@ public class LoginView extends JFrame {
     public void init(String nomeUsuario) {
         dispose();
         SwingUtilities.invokeLater(() -> new PaginaInicialView(nomeUsuario));
+    }
+    
+    public void initVendedor(String nomeUsuario) {
+    	dispose();
+        SwingUtilities.invokeLater(() -> new PaginaInicialVendedorView(nomeUsuario));
     }
     
     public static void main(String[] args) {

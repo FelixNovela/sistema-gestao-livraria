@@ -1,11 +1,11 @@
 package controller;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import model.Livro;
 import model.Venda;
 import service.LivroService;
 import service.VendaService;
@@ -46,18 +46,18 @@ public class ListaVendasController {
         
         DefaultTableModel modeloTabela = view.getModeloTabela();
         modeloTabela.setRowCount(0);
-        
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         for (Venda venda : vendas) {
             
                 Object[] dados = new Object[]{
                 	String.valueOf(venda.getId()),
                 	venda.getCliente(),
-                	venda.getFuncionario(),
+                	venda.getFuncionario().getNome(),
                 	String.format("%.2f",venda.getPagamento().getValorTotalDaVenda()), 
                 	String.format("%.2f",venda.getPagamento().getValorPago()), 
                 	String.format("%.2f",venda.getPagamento().getTroco()), 
                 	venda.getPagamento().getTipoPagamento(),
-                	venda.getData().toString(),
+                	venda.getData().format(formatter),
                     
                    
                     //livro.getQuantidadeEmEstoque(), 
@@ -75,13 +75,13 @@ public class ListaVendasController {
         Object[][] dadosFiltrados = vendas.stream()
             .filter(venda -> 
                 venda.getCliente().toLowerCase().contains(textoPesquisa) ||
-                venda.getFuncionario().toLowerCase().contains(textoPesquisa) ||
+                venda.getFuncionario().getNome().toLowerCase().contains(textoPesquisa) ||
                 venda.getData().toString().contains(textoPesquisa)
             )
             .map(venda -> new Object[]{
             		String.valueOf(venda.getId()),
                 	venda.getCliente(),
-                	venda.getFuncionario(),
+                	venda.getFuncionario().getNome(),
                 	String.format("%.2f",venda.getPagamento().getValorTotalDaVenda()), 
                 	String.format("%.2f",venda.getPagamento().getValorPago()), 
                 	String.format("%.2f",venda.getPagamento().getTroco()), 

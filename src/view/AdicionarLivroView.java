@@ -4,12 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -23,7 +23,7 @@ public class AdicionarLivroView extends JDialog {
     private JTextField campoISBN;
     private JTextField campoTitulo;
     private JTextField campoAutor;
-    private JTextField campoEditora;
+    private JComboBox<String> comboCategoria; // Alterado para JComboBox
     private JTextField campoPreco;
     private JTextField campoQuantidade;
     private Cores cores;
@@ -40,11 +40,12 @@ public class AdicionarLivroView extends JDialog {
 
     private void inicializarComponentes() {
         setLayout(new BorderLayout(10, 10));
-        setSize(400, 400);
+        setSize(500, 550);
         setLocationRelativeTo(null);
+        
+        cores = new Cores();
         getContentPane().setBackground(cores.COR_FUNDO);
 
-        cores = new Cores();
         JPanel painelTitulo = new JPanel(new BorderLayout());
         painelTitulo.setBackground(cores.COR_PRIMARIA);
         painelTitulo.setBorder(BorderFactory.createEmptyBorder(10, 15, 10, 15));
@@ -73,8 +74,9 @@ public class AdicionarLivroView extends JDialog {
         painelCampos.add(campoAutor);
 
         painelCampos.add(criarLabel("Categoria:"));
-        campoEditora = criarCampoTexto();
-        painelCampos.add(campoEditora);
+        
+        comboCategoria = criarComboBoxCategorias();
+        painelCampos.add(comboCategoria);
 
         painelCampos.add(criarLabel("Preco:"));
         campoPreco = criarCampoTexto();
@@ -85,7 +87,7 @@ public class AdicionarLivroView extends JDialog {
         painelCampos.add(campoQuantidade);
 
        
-        JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER));
         painelBotoes.setBackground(cores.COR_FUNDO);
         painelBotoes.setBorder(BorderFactory.createEmptyBorder(0, 20, 15, 20));
         
@@ -130,6 +132,27 @@ public class AdicionarLivroView extends JDialog {
         return campo;
     }
     
+    // Novo método para criar e configurar o ComboBox de categorias
+    private JComboBox<String> criarComboBoxCategorias() {
+        String[] categorias = {"Mangá", "Tecnologia",  "Ficção Científica","Ciência"};
+        
+        JComboBox<String> combo = new JComboBox<>(categorias);
+        combo.setFont(cores.FONTE_PADRAO);
+        combo.setBackground(cores.COR_PAINEL);
+        combo.setForeground(cores.COR_TEXTO);
+       
+        combo.setRenderer(new javax.swing.DefaultListCellRenderer() {
+            @Override
+            public java.awt.Component getListCellRendererComponent(javax.swing.JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                setBackground(isSelected ? cores.COR_BOTAO : cores.COR_PAINEL);
+                setForeground(isSelected ? cores.COR_TEXTO_CLARO : cores.COR_TEXTO);
+                return this;
+            }
+        });
+        return combo;
+    }
+    
     private JButton criarBotao(String texto) {
         JButton botao = new JButton(texto);
         botao.setPreferredSize(new java.awt.Dimension(130, 36));
@@ -166,8 +189,9 @@ public class AdicionarLivroView extends JDialog {
         return campoAutor.getText().trim();
     }
     
-    public String getEditora() {
-        return campoEditora.getText().trim();
+    // Método atualizado para obter a categoria selecionada do ComboBox
+    public String getCategoria() {
+        return (String) comboCategoria.getSelectedItem();
     }
     
     public String getPreco() {

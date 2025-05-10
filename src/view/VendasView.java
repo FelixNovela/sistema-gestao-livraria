@@ -1,12 +1,32 @@
 package view;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
@@ -102,6 +122,11 @@ public class VendasView extends JPanel {
             }
         });
         
+        campoPesquisa.addKeyListener(new KeyAdapter() {
+            public void keyReleased(KeyEvent e) {
+                controller.pesquisarLivros(campoPesquisa.getText());
+            }
+        });
         painelPesquisa.add(campoPesquisa);
         
         String[] colunas = {"ISBN", "Titulo", "Autor", "Categoria", "Estoque", "Preco"};
@@ -126,7 +151,7 @@ public class VendasView extends JPanel {
                         } catch (NumberFormatException ignored) {}
                     }
                 } else {
-                    c.setBackground(cores.COR_DESTAQUE);
+                	c.setBackground(Cores.COR_PAINEL);
                 }
                 c.setForeground(cores.COR_TEXTO);
                 return c;
@@ -271,7 +296,10 @@ public class VendasView extends JPanel {
         cmbFormaPagamento = new JComboBox<>(formasPagamento);
         cmbFormaPagamento.setFont(cores.FONTE_PADRAO);
         cmbFormaPagamento.setBackground(cores.COR_FUNDO);
-        cmbFormaPagamento.setForeground(cores.COR_TEXTO);
+        cmbFormaPagamento.setForeground(cores.COR_PRIMARIA);
+        cmbFormaPagamento.addActionListener(e -> {
+            controller.atualizarFormaPagamento();
+        });
         
        
         

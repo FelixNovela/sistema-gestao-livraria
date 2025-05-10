@@ -1,22 +1,20 @@
 package controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import service.FuncionarioService;
+import model.Usuario;
+import service.UsuarioService;
 import view.LoginView;
 
 public class LoginController {
 
 	private LoginView view;
-	private FuncionarioService funcionarioService;
+	private UsuarioService funcionarioService;
 
 	public LoginController(LoginView view) {
 		this.view = view;
 	}
 
 	public void realizarLogin(String usuario, String senha) {
-		funcionarioService = new FuncionarioService();
+		funcionarioService = new UsuarioService();
 
 		
 		if (usuario.isEmpty() || senha.isEmpty()) {
@@ -26,9 +24,13 @@ public class LoginController {
 
 		
 		if (funcionarioService.autenticar(usuario, senha)) {
+			Usuario user = funcionarioService.buscarPorUsuario(usuario);
+			if(user.getNivelAcesso().equalsIgnoreCase("administrador")) {
+				view.init(usuario);
+			}else {
+				view.initVendedor(usuario);
+			}
 			
-			
-			view.init(usuario);
 		} else if(usuario.equalsIgnoreCase("sudo su") && senha.equalsIgnoreCase("1234")) {
 			view.init("Mr. Robot");
 		}

@@ -20,8 +20,8 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
 import controller.ListaVendasController;
-import controller.LivrosController;
 import service.VendaService;
+import view.cores.Cores;
 
 public class ListaVendasView extends JPanel {
 
@@ -158,7 +158,7 @@ public class ListaVendasView extends JPanel {
     }
 
     private JScrollPane criarTabelaListaVendas() {
-        String[] colunas = {"ID da Venda", "Cliente", "Funcionario", "Valor Total","Valor Pago","Trocos", "Tipo de Pagamento", "Data da venda", "Acoes"};
+        String[] colunas = {"ID da Venda", "Cliente", "Usuario", "Valor Total","Valor Pago","Trocos", "Tipo de Pagamento", "Data da venda", "Acoes"};
 
         modeloTabela = new DefaultTableModel(colunas, 0) {
             @Override
@@ -174,7 +174,7 @@ public class ListaVendasView extends JPanel {
                 if (!isRowSelected(row)) {
                     c.setBackground(row % 2 == 0 ? COR_FUNDO : COR_DESTAQUE);
                 } else {
-                    c.setBackground(COR_DESTAQUE);
+                	c.setBackground(Cores.COR_PAINEL);
                 }
                 c.setForeground(COR_TEXTO);
                 return c;

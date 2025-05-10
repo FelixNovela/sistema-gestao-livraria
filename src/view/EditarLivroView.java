@@ -1,10 +1,8 @@
 package view;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GridLayout;
 
@@ -33,6 +31,7 @@ public class EditarLivroView extends JDialog {
     private JTextField campoAutor;
     private JTextField campoCategoria;
     private JTextField campoPreco;
+    private JTextField campoNovoPreco;
     private JTextField campoEstoque;
     private JTextField campoNovoEstoque;
 
@@ -48,7 +47,7 @@ public class EditarLivroView extends JDialog {
 
     private void inicializarComponentes() {
         setLayout(new BorderLayout(10, 10));
-        setSize(400, 400);
+        setSize(500, 650);
         setLocationRelativeTo(null);
         getContentPane().setBackground(Cores.COR_FUNDO);
 
@@ -68,7 +67,7 @@ public class EditarLivroView extends JDialog {
         painelTitulo.add(labelIsbn, BorderLayout.EAST);
 
     
-        JPanel painelCampos = new JPanel(new GridLayout(6, 2, 10, 10));
+        JPanel painelCampos = new JPanel(new GridLayout(7, 2, 10, 10));
         painelCampos.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         painelCampos.setBackground(Cores.COR_FUNDO);
 
@@ -88,22 +87,28 @@ public class EditarLivroView extends JDialog {
         campoCategoria.setEditable(false);
         painelCampos.add(campoCategoria);
 
-        painelCampos.add(criarLabel("Preco:"));
+        painelCampos.add(criarLabel("Preco Atual:"));
         campoPreco = criarCampoTexto();
+        campoPreco.setEditable(false);
         painelCampos.add(campoPreco);
+        
+        painelCampos.add(criarLabel("Novo Preco:"));
+        campoNovoPreco = criarCampoTexto();
+        painelCampos.add(campoNovoPreco);
 
-        painelCampos.add(criarLabel("Estoque:"));
+        painelCampos.add(criarLabel("Estoque Atual:"));
         campoEstoque = criarCampoTexto();
+        campoEstoque.setEditable(false);
         painelCampos.add(campoEstoque);
 
-//        painelCampos.add(criarLabel("Aumentar estoque:"));
-//        campoNovoEstoque = criarCampoTexto();
-//        painelCampos.add(campoNovoEstoque); 
+        painelCampos.add(criarLabel("Aumentar estoque:"));
+        campoNovoEstoque = criarCampoTexto();
+        painelCampos.add(campoNovoEstoque); 
 
         
        
         
-        JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JPanel painelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER));
         painelBotoes.setBackground(Cores.COR_FUNDO);
         painelBotoes.setBorder(BorderFactory.createEmptyBorder(0, 20, 15, 20));
         
@@ -168,10 +173,13 @@ public class EditarLivroView extends JDialog {
 
     private void preencherCampos() {
         campoTitulo.setText(livro.getTitulo());
+        
         campoAutor.setText(livro.getAutor());
         campoCategoria.setText(livro.getCategoria());
         campoPreco.setText(String.valueOf(livro.getPreco()));
         campoEstoque.setText(String.valueOf(livro.getQuantidadeEmEstoque()));
+        campoNovoPreco.setText(String.valueOf(0));
+        campoNovoEstoque.setText(String.valueOf(0));
     }
 
     private void salvar() {
@@ -182,24 +190,27 @@ public class EditarLivroView extends JDialog {
             String precoTexto = campoPreco.getText().trim();
             String estoqueTexto = campoEstoque.getText().trim();
             
+            String novoPrecoTexto = campoNovoPreco.getText().trim();
+            String novoEstoqueTexto = campoNovoEstoque.getText().trim();
             
-            if (titulo.isEmpty() || autor.isEmpty() || editora.isEmpty() || 
-                precoTexto.isEmpty() || estoqueTexto.isEmpty()) {
-                JOptionPane.showMessageDialog(this, 
-                    "Todos os campos sao obrigatorios.",
-                    "Erro de Validacao", 
-                    JOptionPane.ERROR_MESSAGE);
-                return;
-            }
+//            if (titulo.isEmpty() || autor.isEmpty() || editora.isEmpty() || 
+//            		novoPrecoTexto.isEmpty() || novoEstoqueTexto.isEmpty()) {
+//                JOptionPane.showMessageDialog(this, 
+//                    "Todos os campos sao obrigatorios.",
+//                    "Erro de Validacao", 
+//                    JOptionPane.ERROR_MESSAGE);
+//                return;
+//            }
             
             double preco;
             int estoque;
             
+            
             try {
-                preco = Double.parseDouble(precoTexto);
-                if (preco < 0) {
+                preco = Double.parseDouble(novoPrecoTexto);
+                if (preco <= 0) {
                     JOptionPane.showMessageDialog(this, 
-                        "O preço não pode ser negativo.",
+                        "O preço não pode ser negativo ou igual a zero",
                         "Erro de Validação", 
                         JOptionPane.ERROR_MESSAGE);
                     return;
@@ -213,7 +224,7 @@ public class EditarLivroView extends JDialog {
             }
             
             try {
-                estoque = Integer.parseInt(estoqueTexto);
+                estoque = Integer.parseInt(novoEstoqueTexto);
                 if (estoque < 0) {
                     JOptionPane.showMessageDialog(this, 
                         "O estoque nao pode ser negativo.",
@@ -230,12 +241,19 @@ public class EditarLivroView extends JDialog {
             }
             
             
+            int estoqueAtual = Integer.parseInt(estoqueTexto);
+            
+         
+            
+            int novaQtd = estoque + estoqueAtual;
+            
+            
             
             livro.setPreco(preco);
-            livro.setQuantidadeEmEstoque(estoque);
+            livro.setQuantidadeEmEstoque(novaQtd);
             
             livroService.atualizarPreco(livro.getIsbn(), preco);
-            livroService.atualizarEstoque(livro.getIsbn(), estoque);
+            livroService.atualizarEstoque(livro.getIsbn(), novaQtd);
 
            
             
@@ -243,7 +261,7 @@ public class EditarLivroView extends JDialog {
             atualizarTabela();
             
             JOptionPane.showMessageDialog(this, 
-                "Livro atualizado com sucesso!",
+                "Livro atualizado com sucesso",
                 "Sucesso", 
                 JOptionPane.INFORMATION_MESSAGE);
 

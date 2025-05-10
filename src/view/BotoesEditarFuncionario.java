@@ -22,9 +22,8 @@ import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
 import controller.FuncionarioController;
-import model.Funcionario;
-import model.Livro;
-import service.FuncionarioService;
+import model.Usuario;
+import service.UsuarioService;
 
 public class BotoesEditarFuncionario extends AbstractCellEditor implements TableCellRenderer, TableCellEditor {
 
@@ -32,7 +31,7 @@ public class BotoesEditarFuncionario extends AbstractCellEditor implements Table
 	private JButton botaoEditar;
 	private JButton botaoExcluir;
 	private String funcionarioId;
-	private FuncionarioService funcionarioService;
+	private UsuarioService funcionarioService;
 	private DefaultTableModel modelo;
 	private JTable tabela;
 	private FuncionarioController controller;
@@ -44,7 +43,7 @@ public class BotoesEditarFuncionario extends AbstractCellEditor implements Table
 	private static final Color COR_TEXTO_BOTAO = new Color(0xFFFFFF);
 	private static final Font FONTE_BOTAO = new Font("Segoe UI", Font.BOLD, 12);
 
-	public BotoesEditarFuncionario(JTable tabela, FuncionarioService funcionarioService,
+	public BotoesEditarFuncionario(JTable tabela, UsuarioService funcionarioService,
 			FuncionarioController controller) {
 		this.tabela = tabela;
 		this.funcionarioService = funcionarioService;
@@ -106,10 +105,14 @@ public class BotoesEditarFuncionario extends AbstractCellEditor implements Table
 		int linha = tabela.getSelectedRow();
 		if (linha != -1) {
 			linha = tabela.convertRowIndexToModel(linha);
-			String id = (String) modelo.getValueAt(linha, 0);
-			Funcionario funcionario = funcionarioService.buscarPorId(id);
+			String numeroBi = (String) modelo.getValueAt(linha, 0);
+			Usuario funcionario = funcionarioService.buscarPorBI(numeroBi);
+			String username = (String) modelo.getValueAt(linha, 3);
+			
+			
 			if (funcionario != null) {
 				Frame framePai = (Frame) SwingUtilities.getWindowAncestor(tabela);
+				
 				EditarFuncionarioView dialog = new EditarFuncionarioView(framePai, funcionario, funcionarioService,
 						modelo);
 				dialog.setVisible(true);
@@ -124,18 +127,19 @@ public class BotoesEditarFuncionario extends AbstractCellEditor implements Table
 		int linha = tabela.getSelectedRow();
 		if (linha != -1) {
 			linha = tabela.convertRowIndexToModel(linha);
-			String id = (String) modelo.getValueAt(linha, 0);
+			String username = (String) modelo.getValueAt(linha, 1);
+			String funcionarioId = (String) modelo.getValueAt(linha, 0);
 
 			Frame framePai = (Frame) SwingUtilities.getWindowAncestor(tabela);
 			int confirmacao = JOptionPane.showConfirmDialog(framePai,
-					"Tem certeza que deseja excluir o funcionario com ID: " + id + "?", "Confirmar Exclusao",
+					"Tem certeza que deseja excluir o usuario: " + username + "?", "Confirmar Exclusao",
 					JOptionPane.YES_NO_OPTION);
 
 			if (confirmacao == JOptionPane.YES_OPTION) {
 				funcionarioService.removerFuncionario(funcionarioId);
 				modelo.removeRow(linha);
 
-				JOptionPane.showMessageDialog(framePai, "Funcionario excluído com sucesso", "Sucesso",
+				JOptionPane.showMessageDialog(framePai, "Usuario excluído com sucesso", "Sucesso",
 						JOptionPane.INFORMATION_MESSAGE);
 
 			}

@@ -1,6 +1,7 @@
 package service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import DAO.LivroDAO;
 import model.Livro;
@@ -55,6 +56,13 @@ public class LivroService {
 	public void atualizarPreco(String isbn, double novoPreco) {
 		Livro livro = lvrdao.buscarPorIsbn(isbn);
 		lvrdao.atualizaPreco(livro, novoPreco);
+	}
+	
+	public List<Livro> livrosComEstoqueBaixo() {
+		List<Livro> estoqueBaixo = listarTodos().stream()
+			    .filter(l -> l.getQuantidadeEmEstoque() <=5)
+			    .collect(Collectors.toList());
+		return estoqueBaixo;
 	}
 	
 	public void excluir(String isbn) {
