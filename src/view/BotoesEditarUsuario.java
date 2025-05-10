@@ -21,11 +21,11 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 
-import controller.FuncionarioController;
+import controller.UsuarioController;
 import model.Usuario;
 import service.UsuarioService;
 
-public class BotoesEditarFuncionario extends AbstractCellEditor implements TableCellRenderer, TableCellEditor {
+public class BotoesEditarUsuario extends AbstractCellEditor implements TableCellRenderer, TableCellEditor {
 
 	private JPanel painel;
 	private JButton botaoEditar;
@@ -34,7 +34,7 @@ public class BotoesEditarFuncionario extends AbstractCellEditor implements Table
 	private UsuarioService funcionarioService;
 	private DefaultTableModel modelo;
 	private JTable tabela;
-	private FuncionarioController controller;
+	private UsuarioController controller;
 
 	private static final Color COR_BOTAO_EDITAR = new Color(0x00897B);
 	private static final Color COR_BOTAO_EDITAR_HOVER = new Color(0x00695C);
@@ -43,8 +43,8 @@ public class BotoesEditarFuncionario extends AbstractCellEditor implements Table
 	private static final Color COR_TEXTO_BOTAO = new Color(0xFFFFFF);
 	private static final Font FONTE_BOTAO = new Font("Segoe UI", Font.BOLD, 12);
 
-	public BotoesEditarFuncionario(JTable tabela, UsuarioService funcionarioService,
-			FuncionarioController controller) {
+	public BotoesEditarUsuario(JTable tabela, UsuarioService funcionarioService,
+			UsuarioController controller) {
 		this.tabela = tabela;
 		this.funcionarioService = funcionarioService;
 		this.modelo = (DefaultTableModel) tabela.getModel();

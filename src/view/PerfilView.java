@@ -8,22 +8,22 @@ import java.util.Date;
 
 public class PerfilView extends JPanel {
 
-    // Paleta de cores moderna
-    private static final Color COR_PRIMARIA = new Color(0x5D4037);       // Marrom escuro
-    private static final Color COR_SECUNDARIA = new Color(0x8D6E63);     // Marrom médio
-    private static final Color COR_DESTAQUE = new Color(0xD7CCC8);       // Bege claro
-    private static final Color COR_FUNDO = new Color(0xF5F5F5);          // Cinza muito claro
-    private static final Color COR_TEXTO = new Color(0x212121);          // Quase preto
-    private static final Color COR_TEXTO_SECUNDARIO = new Color(0x757575); // Cinza escuro
+    
+    private static final Color COR_PRIMARIA = new Color(0x5D4037);       
+    private static final Color COR_SECUNDARIA = new Color(0x8D6E63);     
+    private static final Color COR_DESTAQUE = new Color(0xD7CCC8);       
+    private static final Color COR_FUNDO = new Color(0xF5F5F5);          
+    private static final Color COR_TEXTO = new Color(0x212121);          
+    private static final Color COR_TEXTO_SECUNDARIO = new Color(0x757575); 
 
-    // Fontes
+    
     private static final Font FONTE_TITULO = new Font("Segoe UI", Font.BOLD, 24);
     private static final Font FONTE_SUBTITULO = new Font("Segoe UI", Font.BOLD, 16);
     private static final Font FONTE_NORMAL = new Font("Segoe UI", Font.PLAIN, 14);
     private static final Font FONTE_NEGRITO = new Font("Segoe UI", Font.BOLD, 14);
     private static final Font FONTE_PEQUENA = new Font("Segoe UI", Font.PLAIN, 12);
 
-    // Componentes
+   
     private JButton btnEditarPerfil, btnAlterarSenha;
     private JPanel cardFotoPerfil;
     private JLabel lblNome, lblUsername, lblCargo;
@@ -35,10 +35,10 @@ public class PerfilView extends JPanel {
         setBackground(COR_FUNDO);
         setBorder(BorderFactory.createEmptyBorder(25, 30, 25, 30));
 
-        // Barra superior
+   
         add(criarBarraSuperior(), BorderLayout.NORTH);
         
-        // Painel central dividido em duas colunas
+        
         JPanel painelCentral = new JPanel(new GridLayout(1, 2, 20, 0));
         painelCentral.setBackground(COR_FUNDO);
         painelCentral.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
@@ -48,10 +48,10 @@ public class PerfilView extends JPanel {
         
         add(painelCentral, BorderLayout.CENTER);
         
-        // Barra inferior com botões
+     
         add(criarBarraInferior(), BorderLayout.SOUTH);
         
-        // Iniciar temporizador para atualizar o tempo online
+      
         iniciarTemporizador();
     }
 
@@ -82,13 +82,13 @@ public class PerfilView extends JPanel {
         painel.setLayout(new BoxLayout(painel, BoxLayout.Y_AXIS));
         painel.setBackground(COR_FUNDO);
         
-        // Card com foto de perfil
+       
         cardFotoPerfil = criarCardFotoPerfil();
         painel.add(cardFotoPerfil);
         
         painel.add(Box.createRigidArea(new Dimension(0, 20)));
         
-        // Status de atividade
+      
         JPanel statusPanel = new JPanel();
         statusPanel.setLayout(new BoxLayout(statusPanel, BoxLayout.Y_AXIS));
         statusPanel.setBackground(Color.WHITE);
@@ -104,7 +104,7 @@ public class PerfilView extends JPanel {
         
         statusAtividade = new JLabel("● Online");
         statusAtividade.setFont(FONTE_NORMAL);
-        statusAtividade.setForeground(new Color(0x4CAF50));  // Verde
+        statusAtividade.setForeground(new Color(0x4CAF50)); 
         statusAtividade.setAlignmentX(Component.CENTER_ALIGNMENT);
         
         tempoOnline = new JLabel("Ativo há: 1h 27m");
@@ -133,7 +133,7 @@ public class PerfilView extends JPanel {
                 BorderFactory.createEmptyBorder(20, 20, 20, 20)
         ));
         
-        // Placeholder para foto de perfil (círculo)
+     
         JPanel fotoPerfil = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -141,22 +141,22 @@ public class PerfilView extends JPanel {
                 Graphics2D g2d = (Graphics2D) g.create();
                 g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 
-                // Desenha círculo preenchido
+              
                 g2d.setColor(COR_DESTAQUE);
                 g2d.fillOval(0, 0, getWidth(), getHeight());
                 
-                // Desenha borda
+                
                 g2d.setColor(COR_SECUNDARIA);
                 g2d.setStroke(new BasicStroke(2));
                 g2d.drawOval(1, 1, getWidth()-2, getHeight()-2);
                 
-                // Desenha ícone de usuário
+              
                 g2d.setColor(COR_SECUNDARIA);
                 int headSize = getWidth()/3;
                 int headY = getHeight()/4;
                 g2d.fillOval(getWidth()/2 - headSize/2, headY, headSize, headSize);
                 
-                // Corpo
+              
                 g2d.fillOval(getWidth()/2 - getWidth()/4, getHeight()/2, getWidth()/2, getHeight()/2);
                 
                 g2d.dispose();
@@ -171,7 +171,7 @@ public class PerfilView extends JPanel {
         fotoPerfil.setMaximumSize(new Dimension(120, 120));
         fotoPerfil.setAlignmentX(Component.CENTER_ALIGNMENT);
         
-        // Nome e cargo
+        
         lblNome = new JLabel("João M. Alberto");
         lblNome.setFont(FONTE_NEGRITO);
         lblNome.setForeground(COR_TEXTO);
@@ -187,7 +187,7 @@ public class PerfilView extends JPanel {
         lblCargo.setForeground(COR_SECUNDARIA);
         lblCargo.setAlignmentX(Component.CENTER_ALIGNMENT);
         
-        // Adicionar um badge ao cargo
+        
         JPanel badgeCargo = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
         badgeCargo.setBackground(Color.WHITE);
         JLabel lblBadge = new JLabel("Vendedor");
@@ -221,12 +221,12 @@ public class PerfilView extends JPanel {
                 BorderFactory.createEmptyBorder(20, 25, 20, 25)
         ));
         
-        // Título do painel
+        
         JLabel lblInfoTitulo = new JLabel("Informações do Usuário");
         lblInfoTitulo.setFont(FONTE_SUBTITULO);
         lblInfoTitulo.setForeground(COR_PRIMARIA);
         
-        // Separador
+     
         JSeparator separador = new JSeparator();
         separador.setForeground(COR_DESTAQUE);
         separador.setBackground(COR_DESTAQUE);
@@ -236,12 +236,12 @@ public class PerfilView extends JPanel {
         painel.add(separador);
         painel.add(Box.createRigidArea(new Dimension(0, 15)));
         
-        // Informações do usuário
+        
         painel.add(criarCampoInfo("📬 Email", "joao.alberto@livraria.co.mz"));
         painel.add(criarCampoInfo("🆔 Username", "joao.alberto"));
         painel.add(criarCampoInfo("🔑 Nível de Acesso", "VENDAS"));
         
-        // Segunda seção - Estatísticas
+        
         painel.add(Box.createRigidArea(new Dimension(0, 20)));
         JLabel lblEstTitulo = new JLabel("Estatísticas de Acesso");
         lblEstTitulo.setFont(FONTE_SUBTITULO);
@@ -280,7 +280,7 @@ public class PerfilView extends JPanel {
         panel.add(lblLabel, BorderLayout.WEST);
         panel.add(lblValor, BorderLayout.EAST);
         
-        // Adicionar um separador sutil
+       
         JPanel wrapperPanel = new JPanel(new BorderLayout());
         wrapperPanel.setBackground(Color.WHITE);
         wrapperPanel.add(panel, BorderLayout.CENTER);
@@ -318,7 +318,7 @@ public class PerfilView extends JPanel {
                 BorderFactory.createEmptyBorder(10, 20, 10, 20)
         ));
         
-        // Efeito hover
+   
         botao.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 botao.setBackground(cor.brighter());
@@ -333,9 +333,9 @@ public class PerfilView extends JPanel {
     }
     
     private void iniciarTemporizador() {
-        // Temporizador que atualiza o tempo online a cada minuto
+       
         temporizador = new Timer(60000, e -> {
-            // Simular contagem de tempo online
+          
             String tempoAtual = tempoOnline.getText();
             String[] partes = tempoAtual.split(":");
             String horasMinutos = partes[1].trim();
@@ -355,12 +355,12 @@ public class PerfilView extends JPanel {
         temporizador.start();
     }
 
-    // Método para atualizar as informações do usuário
+   
     public void atualizarDadosUsuario(String nome, String username, String email, String cargo, String nivelAcesso) {
         lblNome.setText(nome);
         lblUsername.setText("@" + username);
         
-        // Atualizar badge do cargo
+      
         Component[] components = cardFotoPerfil.getComponents();
         for (Component comp : components) {
             if (comp instanceof JPanel) {
@@ -375,7 +375,7 @@ public class PerfilView extends JPanel {
         }
     }
 
-    // Getters para usar nas ações
+  
     public JButton getBtnEditarPerfil() {
         return btnEditarPerfil;
     }
@@ -384,7 +384,7 @@ public class PerfilView extends JPanel {
         return btnAlterarSenha;
     }
     
-    // Métodos para gerenciar o ciclo de vida
+  
     public void fechar() {
         if (temporizador != null && temporizador.isRunning()) {
             temporizador.stop();

@@ -13,13 +13,13 @@ import view.AdicionarFuncionarioView;
 
 public class AdicionarUsuarioController {
     private AdicionarFuncionarioView view;
-    private UsuarioService funcionarioService;
-    private DefaultTableModel tabelaFuncionarios;
+    private UsuarioService usuarioService;
+    private DefaultTableModel tabelaUsuarios;
     private String id;
-    public AdicionarUsuarioController(AdicionarFuncionarioView view, UsuarioService funcionarioService, DefaultTableModel tabelaFuncionarios) {
+    public AdicionarUsuarioController(AdicionarFuncionarioView view, UsuarioService usuarioService, DefaultTableModel tabelaUsuarios) {
         this.view = view;
-        this.funcionarioService = funcionarioService;
-        this.tabelaFuncionarios = tabelaFuncionarios;
+        this.usuarioService = usuarioService;
+        this.tabelaUsuarios = tabelaUsuarios;
         
         this.view.setController(this);
     }
@@ -62,7 +62,7 @@ public class AdicionarUsuarioController {
             
             
            
-            if (!funcionarioService.validarEDocumento(numeroDocumento)) {
+            if (!usuarioService.validarEDocumento(numeroDocumento)) {
                 JOptionPane.showMessageDialog(view, 
                     "Número de documento inválido",
                     "Erro de Validacao", 
@@ -70,7 +70,7 @@ public class AdicionarUsuarioController {
                 return;
             }
 
-            if (!funcionarioService.verificarBI(numeroDocumento)) {
+            if (!usuarioService.verificarBI(numeroDocumento)) {
                 JOptionPane.showMessageDialog(view, 
                     "Número de BI ja cadastrado",
                     "Erro de Validacao", 
@@ -78,7 +78,7 @@ public class AdicionarUsuarioController {
                 return;
             }
             
-            if (funcionarioService.buscarPorUsuario(usuario) != null) {
+            if (usuarioService.buscarPorUsuario(usuario) != null) {
                 JOptionPane.showMessageDialog(view, 
                     "Este nome de usuario ja exite.",
                     "Erro de Validacao", 
@@ -86,15 +86,15 @@ public class AdicionarUsuarioController {
                 return;
             }
             
-            id = funcionarioService.gerarIdFuncionario();
-            Usuario novoFuncionario = new Usuario(id,nome,email,numeroDocumento.toUpperCase(),usuario,senha,nivelAcesso);
+            id = usuarioService.gerarIdUsuario();
+            Usuario novoUsuario = new Usuario(id,nome,email,numeroDocumento.toUpperCase(),usuario,senha,nivelAcesso);
             
            
             
-            funcionarioService.adicionarFuncionario(novoFuncionario);
+            usuarioService.adicionarUsuario(novoUsuario);
 
             
-            tabelaFuncionarios.addRow(new Object[]{
+            tabelaUsuarios.addRow(new Object[]{
                 numeroDocumento.toUpperCase(), nome, email, usuario,senha,nivelAcesso
             });
 

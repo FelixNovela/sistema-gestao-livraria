@@ -56,7 +56,7 @@ public class VendasController {
             return;
         }
         
-        // Verificar estoque
+      
         int estoque = Integer.parseInt(view.getTabelaLivros().getValueAt(linhaSelecionada, 4).toString());
         if (estoque <= 0) {
             view.mostrarMensagem(
@@ -94,7 +94,7 @@ public class VendasController {
             }
         }
         
-        // Adicionar novo item ao carrinho
+      
         Object[] novoItem = {
             titulo,
             1,
@@ -183,7 +183,7 @@ public class VendasController {
         
         view.getLblTotalVenda().setText(view.getFormatoMoeda().format(total));
         
-        // Se o método de pagamento for Transferencia, atualize o valor pago
+        
         if ("Transferencia".equals(view.getCmbFormaPagamento().getSelectedItem())) {
             view.getValorPago().setText(String.format("%.2f", total));
         }
@@ -223,7 +223,7 @@ public class VendasController {
         String formaPagamento = view.getCmbFormaPagamento().getSelectedItem().toString();
         
         if ("Transferencia".equals(formaPagamento)) {
-            // Preencher o valor automaticamente com o total da venda
+           
             String totalVendaString = view.getLblTotalVenda().getText().toString();
             totalVendaString = totalVendaString.replace("MT", "").trim();
             try {
@@ -233,11 +233,11 @@ public class VendasController {
                 view.getValorPago().setText("0.00");
             }
             
-            // Bloquear a edição do campo
+           
             view.getValorPago().setEditable(false);
             view.getValorPago().setEnabled(false);
         } else {
-            // Permitir a edição do campo para outras formas de pagamento
+           
             view.getValorPago().setEditable(true);
             view.getValorPago().setEnabled(true);
         }

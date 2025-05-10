@@ -10,17 +10,17 @@ import javax.swing.table.DefaultTableModel;
 import model.Usuario;
 import service.UsuarioService;
 import view.AdicionarFuncionarioView;
-import view.BotoesEditarFuncionario;
+import view.BotoesEditarUsuario;
 import view.UsuarioView;
 
-public class FuncionarioController {
+public class UsuarioController {
 
 	private UsuarioView view;
-	private UsuarioService funcionarioService;
+	private UsuarioService usuarioService;
 
-	public FuncionarioController(UsuarioView view, UsuarioService funcionarioService) {
+	public UsuarioController(UsuarioView view, UsuarioService usuarioService) {
 		this.view = view;
-		this.funcionarioService = funcionarioService;
+		this.usuarioService = usuarioService;
 
 		
 		view.setController(this);
@@ -39,21 +39,21 @@ public class FuncionarioController {
 
 		
 		tabela.getColumnModel().getColumn(6)
-				.setCellRenderer(new BotoesEditarFuncionario(tabela, funcionarioService, this));
+				.setCellRenderer(new BotoesEditarUsuario(tabela, usuarioService, this));
 		tabela.getColumnModel().getColumn(6)
-				.setCellEditor(new BotoesEditarFuncionario(tabela, funcionarioService, this));
+				.setCellEditor(new BotoesEditarUsuario(tabela, usuarioService, this));
 	}
 
 	
 	public void atualizarDadosTabela() {
-		List<Usuario> funcionarios = funcionarioService.listarTodos();
+		List<Usuario> usuarios = usuarioService.listarTodos();
 		DefaultTableModel modeloTabela = view.getModeloTabela();
 		modeloTabela.setRowCount(0);
 
-		for (Usuario f : funcionarios) {
-			if (f.isAtivo()) {
-				Object[] dados = new Object[] { f.getNumeroDoBI(), f.getNome(), f.getEmail(),
-						f.getUsuario(), f.getSenha(),f.getNivelAcesso(),
+		for (Usuario u : usuarios) {
+			if (u.isAtivo()) {
+				Object[] dados = new Object[] { u.getNumeroDoBI(), u.getNome(), u.getEmail(),
+						u.getUsuario(), u.getSenha(),u.getNivelAcesso(),
 						"Acoes"
 				};
 				modeloTabela.addRow(dados);
@@ -63,13 +63,13 @@ public class FuncionarioController {
 
 	
 	public void filtrarFuncionarios(String textoPesquisa) {
-		List<Usuario> funcionarios = funcionarioService.listarTodos();
+		List<Usuario> usuarios = usuarioService.listarTodos();
 
 		
 		String pesquisa = textoPesquisa.toLowerCase();
 
 		
-		Object[][] dadosFiltrados = funcionarios.stream()
+		Object[][] dadosFiltrados = usuarios.stream()
 				.filter(f -> f.isAtivo() && (f.getNome().toLowerCase().contains(pesquisa)
 						
 						|| f.getNumeroDoBI().toLowerCase().contains(pesquisa)
@@ -86,7 +86,7 @@ public class FuncionarioController {
 		Frame framePai = (Frame) SwingUtilities.getWindowAncestor(view);
 		AdicionarFuncionarioView dialog = new AdicionarFuncionarioView(framePai);
 		AdicionarUsuarioController adicionarFuncionarioController = new AdicionarUsuarioController(dialog,
-				funcionarioService, view.getModeloTabela());
+				usuarioService, view.getModeloTabela());
 		dialog.setController(adicionarFuncionarioController);
 		dialog.setVisible(true);
 

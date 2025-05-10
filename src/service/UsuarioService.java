@@ -22,7 +22,7 @@ public class UsuarioService {
 		return false;
 	}
 	
-	public void adicionarFuncionario(Usuario funcionario) {
+	public void adicionarUsuario(Usuario funcionario) {
 		funcionarioDAO.adicionarFuncionario(funcionario);
 	}
 
@@ -89,7 +89,7 @@ public class UsuarioService {
 
 
 	
-	public String gerarIdFuncionario() {
+	public String gerarIdUsuario() {
 	    List<Usuario> funcionarios = listarTodos();
 	    int ultimoNumero = 0;
 

@@ -19,7 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
-import controller.FuncionarioController;
+import controller.UsuarioController;
 import service.UsuarioService;
 import view.cores.Cores;
 
@@ -44,7 +44,7 @@ public class UsuarioView extends JPanel {
     private DefaultTableModel modeloTabela;
     private JTable tabela;
     
-    private FuncionarioController controller;
+    private UsuarioController controller;
 
     public UsuarioView() {
         setLayout(new BorderLayout(10, 10));
@@ -53,10 +53,10 @@ public class UsuarioView extends JPanel {
 
         add(criarHeader(), BorderLayout.NORTH);
         add(criarPainelPrincipal(), BorderLayout.CENTER);
-        FuncionarioController controller = new FuncionarioController(this, new UsuarioService());
+        UsuarioController controller = new UsuarioController(this, new UsuarioService());
     }
     
-    public void setController(FuncionarioController controller) {
+    public void setController(UsuarioController controller) {
         this.controller = controller;
     }
 

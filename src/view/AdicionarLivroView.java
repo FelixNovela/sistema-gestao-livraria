@@ -23,7 +23,7 @@ public class AdicionarLivroView extends JDialog {
     private JTextField campoISBN;
     private JTextField campoTitulo;
     private JTextField campoAutor;
-    private JComboBox<String> comboCategoria; // Alterado para JComboBox
+    private JComboBox<String> comboCategoria;
     private JTextField campoPreco;
     private JTextField campoQuantidade;
     private Cores cores;
@@ -132,7 +132,7 @@ public class AdicionarLivroView extends JDialog {
         return campo;
     }
     
-    // Novo método para criar e configurar o ComboBox de categorias
+  
     private JComboBox<String> criarComboBoxCategorias() {
         String[] categorias = {"Mangá", "Tecnologia",  "Ficção Científica","Ciência"};
         
@@ -189,7 +189,7 @@ public class AdicionarLivroView extends JDialog {
         return campoAutor.getText().trim();
     }
     
-    // Método atualizado para obter a categoria selecionada do ComboBox
+  
     public String getCategoria() {
         return (String) comboCategoria.getSelectedItem();
     }
